@@ -806,16 +806,46 @@
 
       this.el.addEventListener('renderstart', () => {
         const cv = this.el.canvas;
-        cv.addEventListener('mousemove', e => this.leerMouse(e));
+        if (!cv) return;
+
+        // Movimiento libre del ratón: dirige la mirada directamente sin necesidad de arrastrar ni dar clic derecho
+        window.addEventListener('mousemove', e => this.manejarMovimientoMouse(e));
+
+        // Disparo con clic izquierdo y captura con clic derecho
         cv.addEventListener('mousedown', e => {
-          this.leerMouse(e);
-          if (e.button === 2) this.capturarEscritorio(); else if (e.button === 0) this.dispararEscritorio();
+          if (this.fase === 'menu') return;
+          if (this.modo === 'pantalla') {
+            this.solicitarBloqueoPuntero();
+          }
+          if (e.button === 2) {
+            this.capturarEscritorio();
+            this.animarReticula('captura');
+          } else if (e.button === 0) {
+            this.dispararEscritorio();
+            this.animarReticula('disparo');
+          }
         });
-        cv.addEventListener('contextmenu', e => e.preventDefault()); // el clic derecho es "atrapar"
-        cv.addEventListener('mouseleave', () => { this.mouseActivo = false; });
+
+        // Prevenir menú contextual para usar clic derecho como captura limpia
+        cv.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Rebloquear puntero al hacer clic en el lienzo si se liberó con ESC
+        cv.addEventListener('click', () => {
+          if (this.modo === 'pantalla' && this.fase !== 'menu') {
+            this.solicitarBloqueoPuntero();
+          }
+        });
+
+        cv.addEventListener('mouseleave', () => {
+          this._ultimoMouseX = undefined;
+          this._ultimoMouseY = undefined;
+        });
       });
       window.addEventListener('keydown', e => {
-        if (e.code === 'KeyC' && !e.repeat && !this.el.is('vr-mode')) this.capturarEscritorio();
+        if (e.code === 'KeyC' && !e.repeat && !this.el.is('vr-mode')) {
+          this.capturarEscritorio();
+          this.animarReticula('captura');
+        }
       });
 
       this.el.addEventListener('enter-vr', () => {
@@ -869,8 +899,22 @@
       Sonido.iniciar();
       document.getElementById('menu').classList.add('oculto');
       this.modo = modo;
-      if (modo === 'pantalla') this.mostrarInicio();
-      else this.esperandoXR = true;
+      const ret = document.getElementById('reticula-pc');
+      const av = document.getElementById('aviso-pc');
+      if (modo === 'pantalla') {
+        if (ret) ret.classList.add('activo');
+        if (av) {
+          av.classList.remove('activo');
+          void av.offsetWidth;
+          av.classList.add('activo');
+        }
+        this.solicitarBloqueoPuntero();
+        this.mostrarInicio();
+      } else {
+        if (ret) ret.classList.remove('activo');
+        if (av) av.classList.remove('activo');
+        this.esperandoXR = true;
+      }
     },
 
     volverAlMenu() {
@@ -879,10 +923,77 @@
       this.visor.visible = false;
       if (this.plataforma) this.plataforma.visible = false;
       Sonido.musica.detener();
+      const ret = document.getElementById('reticula-pc');
+      const av = document.getElementById('aviso-pc');
+      if (ret) ret.classList.remove('activo');
+      if (av) av.classList.remove('activo');
+      if (document.exitPointerLock && document.pointerLockElement) {
+        try { document.exitPointerLock(); } catch (e) {}
+      }
       document.getElementById('menu').classList.remove('oculto');
     },
 
     // ---------- Cámara y entrada ----------
+    solicitarBloqueoPuntero() {
+      const cv = this.el && this.el.canvas;
+      if (!cv) return;
+      try {
+        if (document.pointerLockElement !== cv) {
+          if (cv.requestPointerLock) cv.requestPointerLock();
+          else if (cv.mozRequestPointerLock) cv.mozRequestPointerLock();
+        }
+      } catch (err) {}
+    },
+
+    animarReticula(tipo) {
+      const ret = document.getElementById('reticula-pc');
+      if (!ret) return;
+      ret.classList.remove('disparo', 'captura');
+      void ret.offsetWidth; // reiniciar animación
+      ret.classList.add(tipo);
+      setTimeout(() => { if (ret) ret.classList.remove(tipo); }, 150);
+    },
+
+    manejarMovimientoMouse(e) {
+      if (this.fase === 'menu' || this.el.is('vr-mode')) return;
+
+      let mx = e.movementX;
+      let my = e.movementY;
+
+      // Soporte para navegadores o situaciones donde movementX no se reporte
+      if (mx === undefined || my === undefined) {
+        if (this._ultimoMouseX !== undefined && this._ultimoMouseY !== undefined) {
+          mx = e.clientX - this._ultimoMouseX;
+          my = e.clientY - this._ultimoMouseY;
+        } else {
+          mx = 0;
+          my = 0;
+        }
+      }
+      this._ultimoMouseX = e.clientX;
+      this._ultimoMouseY = e.clientY;
+
+      // Descartar saltos desproporcionados (al recapturar puntero o al entrar el ratón)
+      if (Math.abs(mx) > 180 || Math.abs(my) > 180) {
+        mx = 0; my = 0;
+      }
+
+      // Rotación fluida directa de la perspectiva con el movimiento del ratón
+      const camEl = document.getElementById('camara');
+      const lc = camEl && camEl.components['look-controls'];
+      if (lc && lc.yawObject && lc.pitchObject) {
+        const sens = 0.0022; // Sensibilidad calibrada
+        lc.yawObject.rotation.y -= mx * sens;
+        lc.pitchObject.rotation.x -= my * sens;
+        const maxPitch = 1.35; // ~77° (permite mirar arriba/abajo sin invertir la cabeza)
+        lc.pitchObject.rotation.x = Math.max(-maxPitch, Math.min(maxPitch, lc.pitchObject.rotation.x));
+      }
+
+      // En PC la retícula central es el eje de disparo y enfoque
+      this.mouse.set(0, 0);
+      this.mouseActivo = true;
+    },
+
     actualizarCamara() {
       const cam = this.el.camera;
       if (!cam) return;
@@ -899,8 +1010,12 @@
       return this.camPos.clone().addScaledVector(f, dist).add(new V3(0, dy, 0));
     },
     leerMouse(e) {
-      const r = this.el.canvas.getBoundingClientRect();
-      this.mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      if (this.modo === 'pantalla') {
+        this.mouse.set(0, 0);
+      } else {
+        const r = this.el.canvas.getBoundingClientRect();
+        this.mouse.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+      }
       this.mouseActivo = true;
     },
     datosDe(obj) {
@@ -1112,10 +1227,34 @@
       } else if (this.mouseActivo && this.el.camera && this.objetivos.length) {
         this.rayEscritorio.setFromCamera(this.mouse, this.el.camera);
         const hits = this.rayEscritorio.intersectObjects(this.objetivos.map(o => o.ent.object3D), true);
-        const d = hits[0] && this.datosDe(hits[0].object);
+        let d = hits[0] && this.datosDe(hits[0].object);
+        if (!d) {
+          const h = this.buscarImpactoRayo(this.rayEscritorio.ray);
+          if (h && h.objetivo) d = h.objetivo;
+        }
         if (d && d.vivo) apuntados.add(d);
       }
       this.objetivos.forEach(d => { d.apuntado = apuntados.has(d); });
+
+      // Actualizar estado dinámico de la retícula en PC
+      if (this.modo === 'pantalla') {
+        const ret = document.getElementById('reticula-pc');
+        if (ret) {
+          let primer = null;
+          for (const item of apuntados) { primer = item; break; }
+          if (primer) {
+            if (primer.tipo === 'drone') {
+              ret.className = (primer.datos && primer.datos.esAcoso) ? 'activo fijo-amenaza' : 'activo fijo-seguro';
+            } else if (primer.tipo === 'boton') {
+              ret.className = 'activo fijo-boton';
+            } else {
+              ret.className = 'activo fijo-amenaza';
+            }
+          } else {
+            ret.className = 'activo';
+          }
+        }
+      }
     },
 
     // ---------- Captura (mano izquierda / clic derecho / Tecla C) ----------
@@ -1152,6 +1291,10 @@
         this.rayEscritorio.setFromCamera(this.mouse, this.el.camera);
         const hits = this.rayEscritorio.intersectObjects(this.objetivos.map(o => o.ent.object3D), true);
         d = hits[0] && this.datosDe(hits[0].object);
+        if (!d) {
+          const h = this.buscarImpactoRayo(this.rayEscritorio.ray);
+          if (h && h.objetivo) d = h.objetivo;
+        }
       }
       // Si el cursor no impacta directamente sobre el mesh pero el dron activo está en ventana de respuesta:
       if ((!d || d.tipo !== 'drone') && this.dronActivo && this.dronActivo.vivo && !this.dronActivo.resuelto && (this.dronActivo.sub === 'habla' || this.dronActivo.sub === 'decide')) {

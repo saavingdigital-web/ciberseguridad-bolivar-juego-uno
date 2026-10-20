@@ -15,4 +15,5 @@ $RECYCLE.BIN/
 *.zip
 *.pptx
 *.pdf
+!DOCUMENTO_EJECUTIVO_CIBERESCUDO_BOLIVAR.pdf
 video_reels/
