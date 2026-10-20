@@ -1,0 +1,126 @@
+{
+ "origen_kit": "Modular SciFi MegaKit [Standard] - Quaternius (CC0 1.0)",
+ "archivos": {
+  "alien_cyclop.glb": {
+   "triangulos": 2084,
+   "kb": 97.6,
+   "primitivas": 2,
+   "materiales": [
+    "M_Alien_Eyes",
+    "M_Alien_Body_Blue"
+   ],
+   "imagenes": 0,
+   "dimensiones_m_xyz_gltf": [
+    1.071,
+    2.006,
+    1.222
+   ],
+   "min_xyz": [
+    -0.536,
+    -0.13,
+    -0.578
+   ],
+   "max_xyz": [
+    0.536,
+    1.876,
+    0.643
+   ],
+   "nodos_principales": [
+    "Eye",
+    "Spine_6",
+    "Spine_5",
+    "Spine_4",
+    "Spine_3",
+    "Spine_2",
+    "Spine_1",
+    "Root",
+    "Alien_Cyclops",
+    "Alien_Armature"
+   ],
+   "animaciones": [
+    {
+     "nombre": "Alien_Idle",
+     "duracion_s": 3.333
+    }
+   ],
+   "descripcion": "Alien_Cyclop (2 m, un ojo) con esqueleto y animacion Alien_Idle (flotar/cernirse, bucle)",
+   "origen": "base del cuerpo en reposo en Y=0, centrado en X/Z",
+   "orientacion": "frente (ojo) hacia +Z de glTF",
+   "notas": "Materiales de color plano (M_Alien_Body_Blue, M_Alien_Eyes); la fuente no define emision en los ojos."
+  },
+  "plataforma_mando.glb": {
+   "triangulos": 848,
+   "kb": 140.8,
+   "primitivas": 3,
+   "materiales": [
+    "Trim_02_Azul",
+    "Trim_01",
+    "Anillo_Cian"
+   ],
+   "imagenes": 4,
+   "dimensiones_m_xyz_gltf": [
+    5.991,
+    0.17,
+    5.991
+   ],
+   "min_xyz": [
+    -2.995,
+    -0.169,
+    -2.995
+   ],
+   "max_xyz": [
+    2.995,
+    0.002,
+    2.995
+   ],
+   "nodos_principales": [
+    "Plataforma_Mando"
+   ],
+   "animaciones": [],
+   "descripcion": "Platform_Round1 (D 6 m) + anillo cian emisivo #00f7ff en el reborde",
+   "origen": "centro; cara superior central a Y=0; base a Y=-0.17; el reborde exterior queda a Y=-0.11",
+   "orientacion": "simetrica (revolucion)",
+   "notas": "Texturas 512 px sin mapa normal para cumplir 150 KB."
+  },
+  "sala_mando.glb": {
+   "triangulos": 17238,
+   "kb": 1448.3,
+   "primitivas": 9,
+   "materiales": [
+    "Trim_03",
+    "Trim_03_Oscuro",
+    "Trim_02_Azul",
+    "Decal_Cian",
+    "Trim_01",
+    "Negro",
+    "Luz_Cian",
+    "Luz_Naranja",
+    "Suelo_Oscuro"
+   ],
+   "imagenes": 12,
+   "dimensiones_m_xyz_gltf": [
+    15.928,
+    5.006,
+    16.476
+   ],
+   "min_xyz": [
+    -2.5,
+    -0.006,
+    -8.238
+   ],
+   "max_xyz": [
+    13.428,
+    5,
+    8.238
+   ],
+   "nodos_principales": [
+    "Sala_Mando"
+   ],
+   "animaciones": [],
+   "descripcion": "Sala circular estatica: 12 paredes de 4 m (6 ventanas), cornisa superior, 12 columnas, utileria, decals, luces emisivas, suelo oscuro",
+   "origen": "centro de la sala en X/Z; Y=0 coincide con la cara superior de la plataforma; suelo en Y=-0.17",
+   "orientacion": "pared del logo ASTRANOVA justo delante (-Z de glTF) y otra detras (+Z); ventanas a los lados; sin techo",
+   "notas": "Radio de pared 7.46 m (apotema), 7.73 m (vertice); altura 5 m (3 m pared + 2 m cornisa); ojos a 1.6 m."
+  }
+ }
+}

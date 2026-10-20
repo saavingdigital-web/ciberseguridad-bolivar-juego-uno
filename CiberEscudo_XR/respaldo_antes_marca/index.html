@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>CIBERESCUDO · CÓDIGO VERDE</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icono.svg" type="image/svg+xml">
+  <style>
+    @font-face { font-family: 'Orbitron'; src: url('fuentes/Orbitron.woff2') format('woff2'); font-weight: 400 900; font-display: swap; }
+    @font-face { font-family: 'Rajdhani'; src: url('fuentes/Rajdhani-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Rajdhani'; src: url('fuentes/Rajdhani-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+    /* Paleta «Código Verde» (en juego.js está la equivalente en la constante COL) */
+    :root { --fosforo: #2dff6e; --menta: #9dffbc; --oscuro: #0a3d1c; --texto: #e6ffee; --ambar: #ffcc33; --fondo: #000000; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fondo); }
+    a-scene canvas { cursor: crosshair !important; }
+
+    #menu {
+      position: fixed; inset: 0; z-index: 20; overflow-y: auto;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; padding: 24px 16px; box-sizing: border-box; text-align: center;
+      font-family: Rajdhani, 'Segoe UI', sans-serif; color: var(--texto);
+      background: #000;
+    }
+    #lluvia { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+    #menu::before { /* líneas de barrido muy tenues */
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+      background: repeating-linear-gradient(0deg, rgba(45, 255, 110, 0.035) 0 1px, transparent 1px 4px);
+    }
+    #menu .marco {
+      position: relative; max-width: 640px; width: 100%; padding: 32px 24px; box-sizing: border-box;
+      border: 1px solid rgba(45, 255, 110, 0.5); border-radius: 6px; background: rgba(0, 8, 3, 0.86);
+      box-shadow: 0 0 40px rgba(45, 255, 110, 0.18), inset 0 0 30px rgba(45, 255, 110, 0.05);
+    }
+    #menu .marco::before, #menu .marco::after {
+      content: ''; position: absolute; width: 46px; height: 46px; border: 4px solid var(--fosforo);
+      filter: drop-shadow(0 0 8px var(--fosforo));
+    }
+    #menu .marco::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
+    #menu .marco::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+    #menu .consola { font: 700 44px 'Cascadia Mono', Consolas, 'Courier New', monospace; color: var(--fosforo); text-shadow: 0 0 16px var(--fosforo); }
+    #menu .consola i { font-style: normal; animation: parpadeo 1.1s steps(1) infinite; }
+    @keyframes parpadeo { 50% { opacity: 0; } }
+    #menu h1 {
+      margin: 6px 0 4px; font-family: Orbitron, sans-serif; font-weight: 900; letter-spacing: 2px; line-height: 1.15;
+      font-size: clamp(24px, 6vw, 44px); color: var(--fosforo); text-shadow: 0 0 18px rgba(45, 255, 110, 0.75);
+    }
+    #menu .lema { margin: 0 0 22px; font-size: clamp(17px, 3.6vw, 22px); color: var(--texto); font-weight: 600; }
+    #menu .botones { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+    #menu button {
+      font: 700 20px Orbitron, sans-serif; letter-spacing: 1px; color: var(--texto); cursor: pointer;
+      background: rgba(0, 12, 5, 0.92); border: 2px solid var(--fosforo); border-radius: 6px;
+      padding: 16px 20px; box-shadow: 0 0 16px rgba(45, 255, 110, 0.3), inset 0 0 12px rgba(45, 255, 110, 0.08);
+      transition: transform 0.1s, box-shadow 0.2s, background 0.2s;
+    }
+    #menu button small { display: block; margin-top: 4px; font: 600 15px Rajdhani, sans-serif; color: #a9d9b9; letter-spacing: 0; }
+    #menu button:hover, #menu button:focus-visible { box-shadow: 0 0 28px var(--fosforo); background: rgba(10, 61, 28, 0.85); transform: scale(1.02); outline: none; }
+    #menu button.principal { border-color: var(--menta); box-shadow: 0 0 22px rgba(157, 255, 188, 0.4); font-size: 22px; color: var(--menta); }
+    #menu button.principal:hover { box-shadow: 0 0 34px var(--menta); }
+    #menu button.secundario { border-color: rgba(45, 255, 110, 0.7); }
+    #menu .pie { margin-top: 18px; font-size: 15px; color: #8fc4a0; line-height: 1.5; }
+    #menu .estado { font-weight: 700; color: var(--menta); }
+    #menu .estado.pendiente { color: var(--ambar); }
+    #menu .reset {
+      margin-top: 8px; background: none; border: none; box-shadow: none; padding: 4px;
+      font: 600 14px Rajdhani, sans-serif; color: #6aa07e; text-decoration: underline; letter-spacing: 0;
+    }
+    #menu .reset:hover { box-shadow: none; transform: none; background: none; color: var(--texto); }
+    #aviso { min-height: 20px; color: var(--ambar); font-weight: 700; }
+    .oculto { display: none !important; }
+  </style>
+
+  <script src="vendor/aframe-v1.6.0.min.js"></script>
+  <script src="js/datos.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/juego.js"></script>
+</head>
+<body>
+
+  <div id="menu">
+    <canvas id="lluvia" aria-hidden="true"></canvas>
+    <div class="marco">
+      <div class="consola">&gt;<i>_</i></div>
+      <h1>CIBERESCUDO · CÓDIGO VERDE</h1>
+      <p class="lema">&gt; Tu salón fue hackeado. Escucha cada mensaje: dispara a las amenazas, atrapa los mensajes seguros y protege a tu amigo del ciberacoso.</p>
+      <div class="botones">
+        <button id="btn-ar" class="principal">&gt; REALIDAD MIXTA<small>Las amenazas salen de las paredes reales (recomendado)</small></button>
+        <button id="btn-vr">&gt; MODO VR<small>Mundo virtual completo, con lluvia de código</small></button>
+        <button id="btn-pantalla" class="secundario">&gt; PROBAR EN PANTALLA<small>Sin casco: clic izquierdo = disparar · clic derecho o tecla C = atrapar · arrastra para mirar</small></button>
+      </div>
+      <p id="aviso"></p>
+      <p class="pie">
+        <b>Escucha</b> cada mensaje · amenaza = <b>dispárale</b> (gatillo derecho) · seguro = <b>atrápalo</b> con la mano izquierda (gatillo o agarre). Usa audífonos o volumen alto.<br>
+        <span id="estado-offline" class="estado pendiente">Preparando modo sin conexión…</span>
+      </p>
+      <button id="btn-reset" class="reset">Reiniciar ranking</button>
+    </div>
+  </div>
+
+  <a-scene juego
+           webxr="requiredFeatures: local-floor; optionalFeatures: plane-detection"
+           xr-mode-ui="enabled: false"
+           device-orientation-permission-ui="enabled: false"
+           renderer="antialias: true; foveationLevel: 1">
+
+    <a-entity light="type: ambient; intensity: 0.9; color: #88bb99"></a-entity>
+    <a-entity light="type: directional; intensity: 1.4; color: #ffffff" position="1 3 2"></a-entity>
+
+    <!-- Entorno virtual: se oculta en realidad mixta para ver el salón real -->
+    <a-sky color="#000000" hide-on-enter-ar></a-sky>
+    <a-entity id="entorno" hide-on-enter-ar></a-entity>
+
+    <a-entity id="rig">
+      <a-camera id="camara" position="0 1.6 0" look-controls="pointerLockEnabled: false" wasd-controls="enabled: false"></a-camera>
+      <!-- Manos en primera persona: se muestran al conectar cada mando (ver juego.js) -->
+      <a-entity id="mano-izq" laser-controls="hand: left; model: false"
+                gltf-model="url(modelos/mano_izquierda.glb)" visible="false"
+                raycaster="objects: .disparable; far: 25; showLine: false; enabled: false"></a-entity>
+      <a-entity id="mano-der" laser-controls="hand: right; model: false"
+                gltf-model="url(modelos/mano_derecha.glb)" visible="false"
+                raycaster="objects: .disparable; far: 25; lineColor: #2dff6e; lineOpacity: 0.55"></a-entity>
+    </a-entity>
+
+    <!-- Aquí el juego agrega los objetos que se pueden disparar -->
+    <a-entity id="contenedor"></a-entity>
+  </a-scene>
+
+  <script>
+    const escena = document.querySelector('a-scene');
+    const aviso = document.getElementById('aviso');
+
+    function iniciar(modo) {
+      aviso.textContent = '';
+      const juego = escena.components.juego;
+      if (!juego) return;
+      if (modo === 'pantalla') { juego.activar('pantalla'); return; }
+
+      // El clic del menú es el gesto que el navegador exige para abrir la sesión XR
+      juego.activar(modo);
+      let promesa;
+      try {
+        promesa = modo === 'ar' ? escena.enterAR() : escena.enterVR();
+      } catch (err) {
+        promesa = Promise.reject(err);
+      }
+      Promise.resolve(promesa).catch(err => {
+        console.warn('No se pudo entrar en XR:', err);
+        juego.volverAlMenu();
+        aviso.textContent = modo === 'ar'
+          ? 'Este dispositivo no permite realidad mixta aquí. Usa el Meta Quest o prueba en pantalla.'
+          : 'Este dispositivo no permite VR aquí. Usa el Meta Quest o prueba en pantalla.';
+      });
+    }
+
+    document.getElementById('btn-ar').addEventListener('click', () => iniciar('ar'));
+    document.getElementById('btn-vr').addEventListener('click', () => iniciar('vr'));
+    document.getElementById('btn-pantalla').addEventListener('click', () => iniciar('pantalla'));
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (!confirm('¿Borrar el ranking y reiniciar la numeración de agentes?')) return;
+      try { localStorage.removeItem('ciberescudo_ranking'); localStorage.removeItem('ciberescudo_agentes'); } catch (e) {}
+      aviso.textContent = 'Ranking reiniciado.';
+    });
+
+
+    // Lluvia de código del menú (canvas 2D ligero, sin librerías). Se detiene al ocultar el menú o si el usuario prefiere menos movimiento.
+    (() => {
+      const cv = document.getElementById('lluvia'), menu = document.getElementById('menu');
+      const cx = cv.getContext('2d');
+      const GLIFOS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ<>/\\{}[]=+*;:#%&|~$@!?^_-()'.split('');
+      const TAM = 18;
+      let cols = [], w = 0, h = 0, raf = 0, ultimo = 0;
+      const reducido = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function medir() {
+        const d = Math.min(window.devicePixelRatio || 1, 2);
+        w = cv.width = Math.floor(innerWidth * d); h = cv.height = Math.floor(innerHeight * d);
+        cx.setTransform(d, 0, 0, d, 0, 0);
+        const n = Math.ceil(innerWidth / TAM);
+        cols = Array.from({ length: n }, () => ({ y: -Math.random() * innerHeight / TAM, v: 4 + Math.random() * 9, cola: 8 + Math.random() * 18 }));
+        cx.fillStyle = '#000'; cx.fillRect(0, 0, innerWidth, innerHeight);
+      }
+      function cuadro(t) {
+        raf = requestAnimationFrame(cuadro);
+        const dt = Math.min((t - ultimo) / 1000 || 0.016, 0.05); ultimo = t;
+        // el rastro se apaga solo: se oscurece el cuadro anterior en cada paso
+        cx.fillStyle = 'rgba(0, 0, 0, 0.14)'; cx.fillRect(0, 0, innerWidth, innerHeight);
+        cx.font = `bold ${TAM - 2}px 'Cascadia Mono', Consolas, 'Courier New', monospace`;
+        cx.textAlign = 'center'; cx.textBaseline = 'top';
+        cols.forEach((c, i) => {
+          const antes = Math.floor(c.y);
+          c.y += c.v * dt;
+          if (Math.floor(c.y) === antes) return;
+          const x = i * TAM + TAM / 2, y = Math.floor(c.y) * TAM;
+          cx.fillStyle = '#e6ffee'; cx.globalAlpha = 0.9;
+          cx.fillText(GLIFOS[(Math.random() * GLIFOS.length) | 0], x, y);
+          cx.fillStyle = '#2dff6e'; cx.globalAlpha = 0.55;
+          cx.fillText(GLIFOS[(Math.random() * GLIFOS.length) | 0], x, y - TAM);
+          cx.globalAlpha = 1;
+          if (y > innerHeight && Math.random() > 0.96) { c.y = -Math.random() * c.cola; c.v = 4 + Math.random() * 9; }
+        });
+      }
+      function arrancar() { if (!raf && !menu.classList.contains('oculto')) { ultimo = performance.now(); raf = requestAnimationFrame(cuadro); } }
+      function parar() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+      medir();
+      if (reducido) { // sin movimiento: un solo cuadro con algunas columnas
+        cols.forEach((c, i) => { cx.fillStyle = 'rgba(45,255,110,0.35)'; cx.font = `bold ${TAM - 2}px monospace`; cx.fillText(GLIFOS[(i * 7) % GLIFOS.length], i * TAM, (i * 37) % innerHeight); });
+        return;
+      }
+      addEventListener('resize', medir);
+      new MutationObserver(() => (menu.classList.contains('oculto') ? parar() : arrancar())).observe(menu, { attributes: true, attributeFilter: ['class'] });
+      document.addEventListener('visibilitychange', () => (document.hidden ? parar() : arrancar()));
+      arrancar();
+    })();
+
+    // Modo sin conexión: el service worker guarda todos los archivos en el casco
+    const estado = document.getElementById('estado-offline');
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => {
+        estado.textContent = '✔ Listo para usar sin conexión';
+        estado.classList.remove('pendiente');
+      }).catch(() => { estado.textContent = 'Modo sin conexión no disponible'; });
+    } else {
+      estado.textContent = 'Abre desde https:// o localhost para activar el modo sin conexión';
+    }
+  </script>
+</body>
+</html>

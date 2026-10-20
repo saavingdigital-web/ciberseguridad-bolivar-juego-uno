@@ -1,0 +1,30 @@
+{
+ "kb": 140.8,
+ "triangulos": 848,
+ "primitivas": 3,
+ "materiales": [
+  "Trim_02_Azul",
+  "Trim_01",
+  "Anillo_Cian"
+ ],
+ "imagenes": 4,
+ "min_xyz": [
+  -2.995,
+  -0.169,
+  -2.995
+ ],
+ "max_xyz": [
+  2.995,
+  0.002,
+  2.995
+ ],
+ "dimensiones_m": [
+  5.991,
+  0.17,
+  5.991
+ ],
+ "nodos": [
+  "Plataforma_Mando"
+ ],
+ "animaciones": []
+}

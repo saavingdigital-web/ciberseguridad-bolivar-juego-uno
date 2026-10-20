@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Galería de modelos · CiberDetective</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0e131c; color: #dfe7f0; font: 13px/1.3 system-ui, sans-serif; overflow: hidden; }
+  #barra { position: fixed; top: 0; left: 0; right: 0; padding: 8px 12px; background: rgba(8,12,18,.85); z-index: 2; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  #barra a { color: #8fd8ff; text-decoration: none; padding: 2px 8px; border: 1px solid #2a3a4c; border-radius: 4px; }
+  #barra a.act { background: #1d3a52; }
+  #info { margin-left: auto; color: #9fb3c8; }
+  canvas { display: block; }
+</style>
+<script type="importmap">{ "imports": { "three": "../../vendor/three/build/three.module.js", "three/addons/": "../../vendor/three/examples/jsm/" } }</script>
+</head>
+<body>
+<div id="barra"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const cats = ['arquitectura', 'props', 'vivos'];
+const cat = new URLSearchParams(location.search).get('cat') || cats[0];
+document.getElementById('barra').innerHTML = '<b>Galería</b>' + cats.map(c => `<a href="?cat=${c}" class="${c === cat ? 'act' : ''}">${c}</a>`).join('') + '<span id="info"></span>';
+const info = document.getElementById('info');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(innerWidth, innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#1a2230');
+scene.add(new THREE.HemisphereLight('#bcd4ff', '#8a6a48', 1.1));
+const sol = new THREE.DirectionalLight('#ffd9a8', 2.6); sol.position.set(30, 50, 20); sol.castShadow = true;
+sol.shadow.mapSize.set(2048, 2048); Object.assign(sol.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 1, far: 200 });
+scene.add(sol);
+const suelo = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), new THREE.MeshStandardMaterial({ color: '#3a4250', roughness: 1 }));
+suelo.rotation.x = -Math.PI / 2; suelo.receiveShadow = true; scene.add(suelo);
+const cam = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.1, 2000);
+const ctl = new OrbitControls(cam, renderer.domElement); ctl.enableDamping = true;
+
+const manifiesto = await (await fetch(`${cat}/manifiesto.json?` + Date.now())).json();
+const loader = new GLTFLoader();
+let x = 0, fila = 0, zFila = 0, altoFila = 0, anchoMax = 0;
+const ANCHO_FILA = 90;
+const ranuras = [];
+for (const m of manifiesto) {
+  const g = await loader.loadAsync(`${m.archivo}?` + Date.now()).catch(e => { console.warn('falló', m.archivo, e); return null; });
+  if (!g) continue;
+  const o = g.scene;
+  o.traverse(c => { if (c.isMesh) { c.castShadow = true; c.receiveShadow = true;
+    if (c.material && c.material.name === 'vidrio') { c.material.transparent = true; c.material.opacity = 0.55; c.material.depthWrite = false; } } });
+  const b = new THREE.Box3().setFromObject(o); const s = b.getSize(new THREE.Vector3());
+  const w = Math.max(s.x, s.z, 1.2) + 1.2;
+  if (x + w > ANCHO_FILA) { x = 0; zFila += altoFila + 3; altoFila = 0; }
+  o.position.set(x + w / 2, 0, zFila + Math.max(s.z, 1.2) / 2);
+  altoFila = Math.max(altoFila, Math.max(s.z, 1.2));
+  x += w;
+  scene.add(o); ranuras.push({ m, o });
+}
+info.textContent = `${ranuras.length} modelos · ${manifiesto.reduce((a, m) => a + m.triangulos, 0).toLocaleString()} triángulos en total`;
+const cen = new THREE.Vector3(ANCHO_FILA / 2, 0, zFila / 2);
+ctl.target.copy(cen); cam.position.set(cen.x, Math.max(40, zFila * 0.9 + 25), cen.z + Math.max(55, zFila + 40)); ctl.update();
+addEventListener('resize', () => { cam.aspect = innerWidth / innerHeight; cam.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+renderer.setAnimationLoop(() => { ctl.update(); renderer.render(scene, cam); });
+window.galeria = { ranuras, ctl, cam, THREE };
+</script>
+</body>
+</html>

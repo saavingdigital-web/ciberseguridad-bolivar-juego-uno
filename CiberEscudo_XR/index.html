@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#020612">
+  <title>CIBERESCUDO XR · COMANDO BOLÍVAR | Gobernación de Bolívar · Secretaría TIC</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icono.svg" type="image/svg+xml">
+  <style>
+    @font-face { font-family: 'Orbitron'; src: url('fuentes/Orbitron.woff2') format('woff2'); font-weight: 400 900; font-display: swap; }
+    @font-face { font-family: 'Rajdhani'; src: url('fuentes/Rajdhani-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Rajdhani'; src: url('fuentes/Rajdhani-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+    /* Paleta Cyber-Command Neón: Cian Eléctrico + Azul Bolívar + Oro Institucional (cero terminal verde retro) */
+    :root {
+      --cian: #00e5ff;
+      --cian-brillo: #80f3ff;
+      --azul-bolivar: #0075b8;
+      --azul-mar: #0a1b38;
+      --oro: #ffcc29;
+      --menta: #00ffaa;
+      --rojo: #ff2a5f;
+      --texto: #f0f7ff;
+      --texto-sec: #8eaec9;
+      --fondo: #020612;
+    }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: var(--fondo); }
+    a-scene canvas { cursor: crosshair !important; }
+
+    #menu {
+      position: fixed; inset: 0; z-index: 20; overflow-y: auto;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; padding: 22px 16px; box-sizing: border-box; text-align: center;
+      font-family: Rajdhani, 'Segoe UI', sans-serif; color: var(--texto);
+      background: radial-gradient(circle at 50% 40%, rgba(10, 27, 56, 0.85) 0%, rgba(2, 6, 18, 0.98) 100%);
+    }
+    #lluvia { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
+    #menu::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+      background: radial-gradient(ellipse at 50% 50%, rgba(0, 229, 255, 0.06) 0%, transparent 70%);
+    }
+    #menu .marco {
+      position: relative; max-width: 680px; width: 100%; padding: 28px 28px; box-sizing: border-box;
+      border: 1px solid rgba(0, 229, 255, 0.45); border-radius: 12px;
+      background: linear-gradient(175deg, rgba(8, 20, 42, 0.92) 0%, rgba(3, 10, 24, 0.94) 100%);
+      -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 34px rgba(0, 229, 255, 0.22), 0 0 16px rgba(255, 204, 41, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    #menu .marco::before, #menu .marco::after {
+      content: ''; position: absolute; width: 42px; height: 42px; border: 3px solid var(--cian);
+      filter: drop-shadow(0 0 8px var(--cian)); pointer-events: none;
+    }
+    #menu .marco::before { top: -2px; left: -2px; border-right: none; border-bottom: none; border-top-left-radius: 10px; }
+    #menu .marco::after { bottom: -2px; right: -2px; border-left: none; border-top: none; border-bottom-right-radius: 10px; }
+    
+    #menu .consola {
+      font: 700 13px 'Orbitron', monospace;
+      color: var(--oro); text-shadow: 0 0 12px rgba(255, 204, 41, 0.65);
+      letter-spacing: 2px; margin-bottom: 2px; text-transform: uppercase;
+    }
+    #menu .consola i { font-style: normal; color: var(--cian); animation: parpadeo 1s steps(1) infinite; }
+    @keyframes parpadeo { 50% { opacity: 0; } }
+    
+    #menu h1 {
+      margin: 4px 0 10px; font-family: Orbitron, sans-serif; font-weight: 900; letter-spacing: 2.2px; line-height: 1.1;
+      font-size: clamp(24px, 5.2vw, 38px);
+      background: linear-gradient(180deg, #ffffff 20%, var(--cian-brillo) 70%, var(--cian) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.55));
+    }
+    
+    #menu .historia-caja {
+      margin: 0 0 18px; padding: 14px 18px; border-radius: 8px;
+      background: rgba(6, 16, 36, 0.82);
+      border: 1px solid rgba(0, 229, 255, 0.32);
+      border-left: 4px solid var(--oro);
+      border-right: 4px solid var(--cian);
+      text-align: left; font-size: clamp(15.5px, 3.1vw, 18px); line-height: 1.4; color: var(--texto);
+      box-shadow: inset 0 0 24px rgba(0, 117, 184, 0.16);
+    }
+    #menu .historia-caja .transmision {
+      display: flex; align-items: center; justify-content: space-between;
+      font: 700 12px/1.2 Orbitron, sans-serif; color: var(--oro);
+      letter-spacing: 1px; margin-bottom: 6px; text-transform: uppercase;
+    }
+    #menu .historia-caja .transmision span:last-child { color: var(--cian); }
+    #menu .historia-caja p { margin: 0; font-weight: 600; }
+    #menu .historia-caja strong { color: var(--cian-brillo); font-weight: 700; text-shadow: 0 0 6px rgba(0, 229, 255, 0.3); }
+
+    #menu .botones { display: flex; flex-direction: column; gap: 11px; align-items: stretch; }
+    #menu button {
+      font: 700 18px Orbitron, sans-serif; letter-spacing: 1.2px; color: var(--texto); cursor: pointer;
+      background: linear-gradient(90deg, rgba(8, 22, 48, 0.95), rgba(6, 16, 36, 0.95));
+      border: 2px solid rgba(0, 229, 255, 0.6); border-radius: 8px;
+      padding: 14px 18px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), inset 0 0 14px rgba(0, 229, 255, 0.12);
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s, border-color 0.2s;
+    }
+    #menu button small { display: block; margin-top: 4px; font: 600 15px Rajdhani, sans-serif; color: var(--texto-sec); letter-spacing: 0; }
+    #menu button:hover, #menu button:focus-visible {
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.65), inset 0 0 16px rgba(0, 229, 255, 0.25);
+      border-color: var(--cian); transform: translateY(-2px); outline: none;
+    }
+    #menu button.principal {
+      border-color: var(--cian);
+      background: linear-gradient(90deg, rgba(0, 117, 184, 0.92) 0%, rgba(10, 32, 68, 0.92) 100%);
+      box-shadow: 0 0 24px rgba(0, 229, 255, 0.45); font-size: 20px; color: #ffffff;
+    }
+    #menu button.principal:hover { box-shadow: 0 0 38px rgba(0, 229, 255, 0.85); filter: brightness(1.15); }
+    #menu button.secundario { border-color: rgba(255, 204, 41, 0.65); color: #fff4d1; }
+    #menu button.secundario:hover { border-color: var(--oro); box-shadow: 0 0 28px rgba(255, 204, 41, 0.55); }
+    
+    #menu .pie { margin-top: 14px; font-size: 15px; color: var(--texto-sec); line-height: 1.45; }
+    #menu .estado { font-weight: 700; color: var(--cian); }
+    #menu .estado.pendiente { color: var(--oro); }
+    #menu .reset {
+      margin-top: 6px; background: none; border: none; box-shadow: none; padding: 4px;
+      font: 600 14px Rajdhani, sans-serif; color: #5c7b99; text-decoration: underline; letter-spacing: 0;
+    }
+    #menu .reset:hover { box-shadow: none; transform: none; background: none; color: var(--texto); }
+    #aviso { min-height: 20px; color: var(--oro); font-weight: 700; margin: 6px 0 0; }
+    .oculto { display: none !important; }
+
+    /* Marca institucional (Gobernación de Bolívar · Secretaría de las TIC), según el manual de identidad 2024.
+       Reglas: logo en negativo SOLO sobre panel oscuro opaco (#070a09), margen de seguridad (≥ 14 % del alto del logo),
+       sin tinte, sin brillo, sin transparencia, sin rotar ni deformar (proporción 500:200). */
+    #menu .marca-inst {
+      display: flex; flex-direction: column; align-items: center; gap: 7px; margin-bottom: 12px;
+    }
+    #menu .marca-cinta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 14px; border-radius: 999px;
+      background: linear-gradient(90deg, rgba(24, 41, 97, 0.95), rgba(10, 24, 52, 0.98), rgba(24, 41, 97, 0.95));
+      border: 1px solid rgba(255, 204, 41, 0.7);
+      font: 700 11px/1.2 Orbitron, sans-serif; letter-spacing: 1.5px;
+      color: #ffcc29; text-transform: uppercase;
+      box-shadow: 0 0 16px rgba(0, 175, 239, 0.35);
+    }
+    #menu .marca-cinta::before, #menu .marca-cinta::after {
+      content: '◆'; color: #00afef; font-size: 9px;
+    }
+    #menu .insignia-marco {
+      position: relative; padding: 4px; border-radius: 10px;
+      background: linear-gradient(135deg, #ffcc29 0%, #00afef 52%, #00e5ff 100%);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.85), 0 0 24px rgba(0, 175, 239, 0.35);
+    }
+    #menu .insignia {
+      background: #070a09; border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 7px;
+      padding: 15px 20px; line-height: 0; box-shadow: none; filter: none; opacity: 1;
+    }
+    #menu .insignia img { display: block; width: 255px; max-width: 100%; height: auto; aspect-ratio: 5 / 2; filter: none; opacity: 1; }
+    #menu .iniciativa {
+      margin: 0; font: 700 14.5px/1.3 Rajdhani, 'Segoe UI', sans-serif; color: #eaf3ff;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-height: 820px) {
+      #menu { gap: 6px; padding: 8px 14px; }
+      #menu .marco { padding: 14px 20px 12px; }
+      #menu .marca-inst { gap: 4px; margin-bottom: 6px; }
+      #menu .insignia { padding: 11px 15px; }
+      #menu .insignia img { width: 205px; }
+      #menu .consola { font-size: 11.5px; line-height: 1.05; }
+      #menu h1 { margin: 2px 0 4px; font-size: clamp(19px, 3vw, 26px); }
+      #menu .historia-caja { margin-bottom: 10px; padding: 8px 12px; font-size: 14.5px; line-height: 1.26; }
+      #menu .botones { gap: 7px; }
+      #menu button { padding: 8px 14px; font-size: 16.5px; }
+      #menu button.principal { font-size: 17.5px; }
+      #menu button small { margin-top: 2px; font-size: 13px; }
+      #aviso { min-height: 16px; margin: 4px 0 0; }
+      #menu .pie { margin-top: 8px; font-size: 13px; line-height: 1.3; }
+      #menu .reset { margin-top: 2px; }
+    }
+  </style>
+
+  <script src="vendor/aframe-v1.6.0.min.js"></script>
+  <script src="js/datos.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/juego.js"></script>
+</head>
+<body>
+
+  <div id="menu">
+    <canvas id="lluvia" aria-hidden="true"></canvas>
+    <div class="marco">
+      <div class="marca-inst">
+        <span class="marca-cinta">Centro de Ciberdefensa Escolar · Bolívar</span>
+        <div class="insignia-marco">
+          <div class="insignia">
+            <img src="marca/logo_secretaria.png" width="500" height="200" alt="Gobernación de Bolívar · Secretaría de las TIC"
+                 onerror="this.parentNode.parentNode.style.display='none'">
+          </div>
+        </div>
+        <p class="iniciativa">Una iniciativa de la Gobernación de Bolívar · Secretaría de las TIC</p>
+      </div>
+      <div class="consola">&gt; PROTOCOLO ACTIVO: CIBERDEFENSA CARIBE<i>_</i></div>
+      <h1>CIBERESCUDO XR · COMANDO BOLÍVAR</h1>
+      <div class="historia-caja">
+        <div class="transmision">
+          <span>📡 Inspectora Valeria Ríos · Ciberpolicía</span>
+          <span>Nodo: Red Escolar de Bolívar</span>
+        </div>
+        <p>
+          La red estudiantil de Bolívar sufre una intrusión del sindicato <strong>«Sombra Phish»</strong>.
+          Como <strong>Guardián Digital</strong>, los drones atacarán en vuelo continuo:
+          <strong>destruye las amenazas</strong> con tu bláster antes de que embistan tu visor y drenen tu <strong>Barra de Vida</strong>, <strong>atrapa los mensajes seguros</strong> con tu guante izquierdo, y en la Fase 2 defiende a tu compañero <strong>Mateo (11°B)</strong> levantando el Escudo Solidario.
+        </p>
+      </div>
+      <div class="botones">
+        <button id="btn-ar" class="principal">&gt; REALIDAD MIXTA (META QUEST 3S)<small>Los portales y drones sobrevuelan tu salón real a 90 Hz (recomendado)</small></button>
+        <button id="btn-vr">&gt; MODO VR · PUENTE DE MANDO 360°<small>Inmersión en el centro de mando sobre la costa del Caribe</small></button>
+        <button id="btn-pantalla" class="secundario">&gt; PROBAR EN PC / NAVEGADOR<small>Clic izq. = disparar amenaza · clic der. o C = atrapar mensaje seguro</small></button>
+      </div>
+      <p id="aviso"></p>
+      <p class="pie">
+        <b>Mecánica de Combate:</b> ¡Las amenazas inician embestida hacia tu visor! <b>Dispara a tiempo</b> (gatillo der. / clic izq.) para detonarlas en el aire · <b>Atrapa mensajes seguros</b> (mano izq. / clic der. o C).<br>
+        <span id="estado-offline" class="estado pendiente">Preparando modo sin conexión…</span>
+      </p>
+      <button id="btn-reset" class="reset">Reiniciar ranking de operadores</button>
+    </div>
+  </div>
+
+  <a-scene juego
+           webxr="requiredFeatures: local-floor; optionalFeatures: plane-detection"
+           xr-mode-ui="enabled: false"
+           device-orientation-permission-ui="enabled: false"
+           renderer="antialias: true; foveationLevel: 1; colorManagement: true">
+
+    <a-entity light="type: ambient; intensity: 1.15; color: #a5d8f7"></a-entity>
+    <a-entity light="type: directional; intensity: 1.8; color: #ffffff" position="2 4 3"></a-entity>
+
+    <!-- Skybox 360° de alta fidelidad generado por IA para Realidad Virtual y PC (se oculta en Realidad Mixta) -->
+    <a-sky src="texturas/skybox_ciber_command.jpg" rotation="0 -90 0" hide-on-enter-ar></a-sky>
+    <a-entity id="entorno" hide-on-enter-ar></a-entity>
+
+    <a-entity id="rig">
+      <a-camera id="camara" position="0 1.6 0" look-controls="pointerLockEnabled: false" wasd-controls="enabled: false"></a-camera>
+      <!-- Manos en primera persona -->
+      <a-entity id="mano-izq" laser-controls="hand: left; model: false"
+                gltf-model="url(modelos/mano_izquierda.glb)" visible="false"
+                raycaster="objects: .disparable; far: 25; showLine: false; enabled: false"></a-entity>
+      <a-entity id="mano-der" laser-controls="hand: right; model: false"
+                gltf-model="url(modelos/mano_derecha.glb)" visible="false"
+                raycaster="objects: .disparable; far: 25; lineColor: #00e5ff; lineOpacity: 0.85"></a-entity>
+    </a-entity>
+
+    <!-- Contenedor dinámico de entidades del juego -->
+    <a-entity id="contenedor"></a-entity>
+  </a-scene>
+
+  <script>
+    const escena = document.querySelector('a-scene');
+    const aviso = document.getElementById('aviso');
+
+    function iniciar(modo) {
+      aviso.textContent = '';
+      const juego = escena.components.juego;
+      if (!juego) return;
+      if (modo === 'pantalla') { juego.activar('pantalla'); return; }
+
+      juego.activar(modo);
+      let promesa;
+      try {
+        promesa = modo === 'ar' ? escena.enterAR() : escena.enterVR();
+      } catch (err) {
+        promesa = Promise.reject(err);
+      }
+      Promise.resolve(promesa).catch(err => {
+        console.warn('No se pudo entrar en XR:', err);
+        juego.volverAlMenu();
+        aviso.textContent = modo === 'ar'
+          ? 'Este dispositivo no permite realidad mixta aquí. Usa el Meta Quest o prueba en pantalla.'
+          : 'Este dispositivo no permite VR aquí. Usa el Meta Quest o prueba en pantalla.';
+      });
+    }
+
+    document.getElementById('btn-ar').addEventListener('click', () => iniciar('ar'));
+    document.getElementById('btn-vr').addEventListener('click', () => iniciar('vr'));
+    document.getElementById('btn-pantalla').addEventListener('click', () => iniciar('pantalla'));
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      if (!confirm('¿Borrar el ranking y reiniciar la numeración de agentes?')) return;
+      try { localStorage.removeItem('ciberescudo_ranking'); localStorage.removeItem('ciberescudo_agentes'); } catch (e) {}
+      aviso.textContent = 'Ranking reiniciado.';
+    });
+
+    // Fondo interactivo 2.5D: Red neuronal holográfica y constelaciones de ciberdatos en cian, azul y oro (cero texto verde retro)
+    (() => {
+      const cv = document.getElementById('lluvia'), menu = document.getElementById('menu');
+      const cx = cv.getContext('2d');
+      let w = 0, h = 0, raf = 0, ultimo = 0;
+      let nodos = [];
+      const NUM_NODOS = 64;
+
+      function medir() {
+        const d = Math.min(window.devicePixelRatio || 1, 2);
+        w = cv.width = Math.floor(innerWidth * d); h = cv.height = Math.floor(innerHeight * d);
+        cx.setTransform(d, 0, 0, d, 0, 0);
+        nodos = Array.from({ length: NUM_NODOS }, () => ({
+          x: Math.random() * innerWidth,
+          y: Math.random() * innerHeight,
+          vx: (Math.random() - 0.5) * 28,
+          vy: (Math.random() - 0.5) * 28,
+          r: 1.5 + Math.random() * 2.5,
+          color: Math.random() < 0.65 ? '#00e5ff' : (Math.random() < 0.85 ? '#0075b8' : '#ffcc29'),
+          pulso: Math.random() * Math.PI * 2
+        }));
+      }
+
+      function cuadro(t) {
+        raf = requestAnimationFrame(cuadro);
+        const dt = Math.min((t - ultimo) / 1000 || 0.016, 0.05); ultimo = t;
+        cx.fillStyle = 'rgba(2, 6, 18, 0.28)';
+        cx.fillRect(0, 0, innerWidth, innerHeight);
+
+        // Radar táctico circular sutil en el fondo
+        const cx0 = innerWidth / 2, cy0 = innerHeight / 2;
+        const radT = (t * 0.0006) % 1;
+        cx.strokeStyle = 'rgba(0, 229, 255, 0.08)';
+        cx.lineWidth = 1;
+        cx.beginPath();
+        cx.arc(cx0, cy0, radT * Math.max(innerWidth, innerHeight) * 0.75, 0, Math.PI * 2);
+        cx.stroke();
+
+        // Actualizar y enlazar nodos de la red
+        for (let i = 0; i < nodos.length; i++) {
+          const n = nodos[i];
+          n.x += n.vx * dt; n.y += n.vy * dt; n.pulso += dt * 3;
+          if (n.x < 0) n.x = innerWidth; if (n.x > innerWidth) n.x = 0;
+          if (n.y < 0) n.y = innerHeight; if (n.y > innerHeight) n.y = 0;
+
+          // Dibujar enlaces con nodos vecinos
+          for (let j = i + 1; j < nodos.length; j++) {
+            const m = nodos[j];
+            const dx = m.x - n.x, dy = m.y - n.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 130) {
+              const alfa = (1 - dist / 130) * 0.22;
+              cx.strokeStyle = `rgba(0, 229, 255, ${alfa})`;
+              cx.lineWidth = 1;
+              cx.beginPath(); cx.moveTo(n.x, n.y); cx.lineTo(m.x, m.y); cx.stroke();
+            }
+          }
+
+          // Dibujar nodo con halo
+          const p = 1 + Math.sin(n.pulso) * 0.3;
+          cx.fillStyle = n.color;
+          cx.shadowColor = n.color;
+          cx.shadowBlur = 8;
+          cx.beginPath();
+          cx.arc(n.x, n.y, n.r * p, 0, Math.PI * 2);
+          cx.fill();
+          cx.shadowBlur = 0;
+        }
+      }
+
+      function arrancar() { if (!raf && !menu.classList.contains('oculto')) { ultimo = performance.now(); raf = requestAnimationFrame(cuadro); } }
+      function parar() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+      medir();
+      addEventListener('resize', medir);
+      new MutationObserver(() => (menu.classList.contains('oculto') ? parar() : arrancar())).observe(menu, { attributes: true, attributeFilter: ['class'] });
+      document.addEventListener('visibilitychange', () => (document.hidden ? parar() : arrancar()));
+      arrancar();
+    })();
+
+    // Service worker
+    const estado = document.getElementById('estado-offline');
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      navigator.serviceWorker.register('sw.js').then(() => navigator.serviceWorker.ready).then(() => {
+        estado.textContent = '✔ Listo para usar sin conexión';
+        estado.classList.remove('pendiente');
+      }).catch(() => { estado.textContent = 'Modo sin conexión no disponible'; });
+    } else {
+      estado.textContent = 'Abre desde https:// o localhost para activar el modo sin conexión';
+    }
+  </script>
+</body>
+</html>

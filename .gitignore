@@ -1,0 +1,18 @@
+# OS metadata
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Temporary & cache
+*.tmp
+*.bak
+*.log
+*.bat
+
+# Large binary archives, slides & submodules
+*.zip
+*.pptx
+*.pdf
+video_reels/

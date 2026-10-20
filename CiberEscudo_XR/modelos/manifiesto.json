@@ -1,0 +1,125 @@
+[
+  {
+    "nombre": "accion_tarjeta",
+    "archivo": "accion_tarjeta.glb",
+    "triangulos": 260,
+    "kb": 24.1,
+    "dimensiones_xyz_m_blender": [
+      0.62,
+      0.043,
+      0.26
+    ],
+    "nodos": [
+      "accion_tarjeta"
+    ],
+    "notas": "frente -Y Blender (+Z glTF); plano de textura 0.56x0.20 en z glTF +0.0135; sin texto"
+  },
+  {
+    "nombre": "amigo_holo",
+    "archivo": "amigo_holo.glb",
+    "triangulos": 1592,
+    "kb": 117.8,
+    "dimensiones_xyz_m_blender": [
+      1.0,
+      1.0,
+      1.651
+    ],
+    "nodos": [
+      "amigo_holo"
+    ],
+    "notas": "un solo mesh; frente (visor) -Y Blender (+Z glTF); origen centro de la base en el suelo; altura 1.65 m"
+  },
+  {
+    "nombre": "blaster_cian",
+    "archivo": "blaster_cian.glb",
+    "triangulos": 508,
+    "kb": 40.1,
+    "dimensiones_xyz_m_blender": [
+      0.057,
+      0.25,
+      0.206
+    ],
+    "nodos": [
+      "blaster"
+    ],
+    "notas": "origen en el agarre; canon a -Y Blender (+Z glTF); boca a 0.20 m; arriba +Z Blender (+Y glTF)"
+  },
+  {
+    "nombre": "blaster_naranja",
+    "archivo": "blaster_naranja.glb",
+    "triangulos": 508,
+    "kb": 40.1,
+    "dimensiones_xyz_m_blender": [
+      0.057,
+      0.25,
+      0.206
+    ],
+    "nodos": [
+      "blaster"
+    ],
+    "notas": "origen en el agarre; canon a -Y Blender (+Z glTF); boca a 0.20 m; arriba +Z Blender (+Y glTF)"
+  },
+  {
+    "nombre": "burbuja_acoso",
+    "archivo": "burbuja_acoso.glb",
+    "triangulos": 348,
+    "kb": 39.9,
+    "dimensiones_xyz_m_blender": [
+      0.261,
+      0.248,
+      0.292
+    ],
+    "nodos": [
+      "burbuja_acoso"
+    ],
+    "notas": "frente -Y Blender (+Z glTF); origen en el centro; concha translucida 'vidrio_rojo'"
+  },
+  {
+    "nombre": "dron_mensaje",
+    "archivo": "dron_mensaje.glb",
+    "triangulos": 952,
+    "kb": 82.2,
+    "dimensiones_xyz_m_blender": [
+      0.36,
+      0.36,
+      0.343
+    ],
+    "nodos": [
+      "cuerpo",
+      "anillo"
+    ],
+    "notas": "frente(lente) a -Y Blender = +Z glTF; anillo hijo de cuerpo, gira sobre Y glTF"
+  },
+  {
+    "nombre": "escudo_amigo",
+    "archivo": "escudo_amigo.glb",
+    "triangulos": 1034,
+    "kb": 64.4,
+    "dimensiones_xyz_m_blender": [
+      2.0,
+      2.0,
+      1.009
+    ],
+    "nodos": [
+      "escudo_amigo"
+    ],
+    "notas": "cupula r=1.0 m, base en Z=0, abierta por abajo; simetrica (sin frente); material vidrio + emisivo_dorado"
+  },
+  {
+    "nombre": "portal_marco",
+    "archivo": "portal_marco.glb",
+    "triangulos": 1184,
+    "kb": 93.0,
+    "dimensiones_xyz_m_blender": [
+      1.108,
+      0.128,
+      1.108
+    ],
+    "nodos": [
+      "aro_exterior",
+      "marcas",
+      "aro_interior"
+    ],
+    "notas": "frente -Y Blender (+Z glTF); hueco libre de diametro 0.84 m; ejes de giro = Z local (hacia el frente) en el juego"
+  }
+]

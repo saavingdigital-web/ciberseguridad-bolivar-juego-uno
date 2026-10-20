@@ -1,0 +1,43 @@
+{
+ "kb": 97.6,
+ "triangulos": 2084,
+ "primitivas": 2,
+ "materiales": [
+  "M_Alien_Eyes",
+  "M_Alien_Body_Blue"
+ ],
+ "imagenes": 0,
+ "min_xyz": [
+  -0.536,
+  -0.13,
+  -0.578
+ ],
+ "max_xyz": [
+  0.536,
+  1.876,
+  0.643
+ ],
+ "dimensiones_m": [
+  1.071,
+  2.006,
+  1.222
+ ],
+ "nodos": [
+  "Eye",
+  "Spine_6",
+  "Spine_5",
+  "Spine_4",
+  "Spine_3",
+  "Spine_2",
+  "Spine_1",
+  "Root",
+  "Alien_Cyclops",
+  "Alien_Armature"
+ ],
+ "animaciones": [
+  {
+   "nombre": "Alien_Idle",
+   "duracion_s": 3.333
+  }
+ ]
+}

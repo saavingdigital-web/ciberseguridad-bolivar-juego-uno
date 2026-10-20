@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>CiberDetective · Galería de retratos e iconos</title>
+  <link rel="stylesheet" href="../../css/estilo.css">
+  <style>
+    body { margin: 0; padding: 12px; background: #14171c; color: #eee; font: 13px sans-serif; }
+    .g { display: flex; flex-wrap: wrap; gap: 10px; }
+    .r { width: 170px; }
+    .r > div { width: 170px; height: 170px; border: 3px solid #c8963a; }
+    .r svg { width: 100%; height: 100%; display: block; }
+    .i { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .i span.cd-grabado { width: 44px; height: 44px; background: #1d2129; padding: 6px; }
+  </style>
+</head>
+<body class="cd-raiz">
+  <div class="g" id="g"></div>
+  <div class="i" id="i"></div>
+  <script type="module">
+    import * as datos from '../datos/datos.js';
+    import { retratoPersona, retratoDetective } from './retratos.js';
+    import { GRABADOS, grabado, instalarDefsGrabado } from './iconos.js';
+    instalarDefsGrabado();
+    const g = document.getElementById('g');
+    const add = (svg, t) => { const d = document.createElement('div'); d.className = 'r'; d.innerHTML = `<div>${svg}</div>${t}`; g.append(d); };
+    add(retratoDetective(datos.DETECTIVE), 'Valeria Ríos');
+    datos.CASOS.forEach(c => add(retratoPersona(c.victima), `${c.victima.nombre} · ${c.victima.edad}`));
+    const i = document.getElementById('i');
+    Object.keys(GRABADOS).forEach(k => { const s = grabado(k); s.title = k; i.append(s); });
+  </script>
+</body>
+</html>

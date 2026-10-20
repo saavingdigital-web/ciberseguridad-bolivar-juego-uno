@@ -1,0 +1,210 @@
+[
+  {
+    "triangulos": 1422,
+    "dimensiones_xyz_m": [
+      3.03,
+      11.406,
+      3.535
+    ],
+    "nombre": "bus_urbano",
+    "archivo": "vivos/bus_urbano.glb",
+    "kb": 40.0,
+    "notas": "11 m; carroceria clara tintable; puerta a la derecha (-X); letrero de destino emisivo"
+  },
+  {
+    "triangulos": 1540,
+    "dimensiones_xyz_m": [
+      2.84,
+      7.916,
+      3.52
+    ],
+    "nombre": "camion_reparto",
+    "archivo": "vivos/camion_reparto.glb",
+    "kb": 42.2,
+    "notas": "camion de reparto 7.4 m; cabina y caja claras tintables; franjas sin texto"
+  },
+  {
+    "triangulos": 1524,
+    "dimensiones_xyz_m": [
+      2.36,
+      5.058,
+      1.925
+    ],
+    "nombre": "camioneta",
+    "archivo": "vivos/camioneta.glb",
+    "kb": 41.2,
+    "notas": "SUV con rack de techo y repuesto trasero; carroceria en tono claro tintable"
+  },
+  {
+    "triangulos": 1580,
+    "dimensiones_xyz_m": [
+      2.87,
+      9.546,
+      4.04
+    ],
+    "nombre": "chiva",
+    "archivo": "vivos/chiva.glb",
+    "kb": 44.8,
+    "notas": "bus de escalera: colores horneados (usar tinte blanco); parrilla con carga en el techo; escalera atras"
+  },
+  {
+    "triangulos": 2020,
+    "dimensiones_xyz_m": [
+      0.634,
+      0.693,
+      1.873
+    ],
+    "nombre": "detective_valeria",
+    "archivo": "vivos/detective_valeria.glb",
+    "kb": 53.2,
+    "notas": "heroina: gabardina ocre, bufanda cian, fedora, tablet con pantalla emisiva en la mano izquierda (+X), insignia dorada",
+    "cadera_z": 0.9,
+    "convencion": "pose neutra; abrigo en una sola malla (no dividir piernas por x)"
+  },
+  {
+    "triangulos": 885,
+    "dimensiones_xyz_m": [
+      0.593,
+      0.465,
+      1.765
+    ],
+    "nombre": "estudiante",
+    "archivo": "vivos/estudiante.glb",
+    "kb": 23.2,
+    "notas": "uniforme escolar: blusa blanca, chaleco y corbata rojos, pantalon azul, mochila verde, trenzas",
+    "cadera_z": 0.9,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  },
+  {
+    "triangulos": 896,
+    "dimensiones_xyz_m": [
+      0.83,
+      1.99,
+      1.86
+    ],
+    "nombre": "moto",
+    "archivo": "vivos/moto.glb",
+    "kb": 23.9,
+    "notas": "moto con piloto de casco amarillo; carroceria clara tintable"
+  },
+  {
+    "triangulos": 1210,
+    "dimensiones_xyz_m": [
+      1.615,
+      3.18,
+      1.855
+    ],
+    "nombre": "mototaxi",
+    "archivo": "vivos/mototaxi.glb",
+    "kb": 32.4,
+    "notas": "mototaxi: moto delantera + cabina trasera con techo rojo; conductor con gorra"
+  },
+  {
+    "triangulos": 754,
+    "dimensiones_xyz_m": [
+      0.379,
+      0.278,
+      1.18
+    ],
+    "nombre": "nino",
+    "archivo": "vivos/nino.glb",
+    "kb": 20.1,
+    "notas": "nino 1.2 m: cadera a 0.576 m (proporcional); cabeza grande",
+    "cadera_z": 0.576,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  },
+  {
+    "triangulos": 757,
+    "dimensiones_xyz_m": [
+      0.652,
+      0.38,
+      1.765
+    ],
+    "nombre": "peaton_hombre_a",
+    "archivo": "vivos/peaton_hombre_a.glb",
+    "kb": 19.9,
+    "notas": "oficinista: camisa clara, corbata roja, maletin en la mano derecha",
+    "cadera_z": 0.9,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  },
+  {
+    "triangulos": 818,
+    "dimensiones_xyz_m": [
+      0.724,
+      0.496,
+      1.78
+    ],
+    "nombre": "peaton_hombre_b",
+    "archivo": "vivos/peaton_hombre_b.glb",
+    "kb": 21.3,
+    "notas": "hombre robusto: camiseta amarilla, gorra roja, mochila oscura, bigote",
+    "cadera_z": 0.9,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  },
+  {
+    "triangulos": 808,
+    "dimensiones_xyz_m": [
+      0.587,
+      0.343,
+      1.765
+    ],
+    "nombre": "peaton_mujer_a",
+    "archivo": "vivos/peaton_mujer_a.glb",
+    "kb": 21.0,
+    "notas": "joven: pelo largo suelto, blusa turquesa, jeans, bolso cruzado rosa",
+    "cadera_z": 0.9,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  },
+  {
+    "triangulos": 802,
+    "dimensiones_xyz_m": [
+      0.663,
+      0.343,
+      1.828
+    ],
+    "nombre": "peaton_mujer_b",
+    "archivo": "vivos/peaton_mujer_b.glb",
+    "kb": 21.3,
+    "notas": "mujer: mono alto, gafas oscuras, blusa rosa, pantalon capri claro, cartera amarilla",
+    "cadera_z": 0.9,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  },
+  {
+    "triangulos": 1340,
+    "dimensiones_xyz_m": [
+      2.2,
+      4.808,
+      1.41
+    ],
+    "nombre": "sedan_a",
+    "archivo": "vivos/sedan_a.glb",
+    "kb": 36.8,
+    "notas": "carroceria en tono claro tintable"
+  },
+  {
+    "triangulos": 1404,
+    "dimensiones_xyz_m": [
+      2.2,
+      4.808,
+      1.57
+    ],
+    "nombre": "taxi_amarillo",
+    "archivo": "vivos/taxi_amarillo.glb",
+    "kb": 39.9,
+    "notas": "amarillo horneado (usar tinte blanco); farol de taxi con panel emisivo"
+  },
+  {
+    "triangulos": 886,
+    "dimensiones_xyz_m": [
+      0.661,
+      0.777,
+      1.82
+    ],
+    "nombre": "vendedor",
+    "archivo": "vivos/vendedor.glb",
+    "kb": 23.5,
+    "notas": "vendedor ambulante: sombrero vueltiao, guayabera, delantal verde y bandeja de dulces al cuello",
+    "cadera_z": 0.9,
+    "convencion": "pies Z=0; piernas |x|<0.18 separadas por signo de x; brazos |x|>=0.21; torso |x|<=0.19"
+  }
+]

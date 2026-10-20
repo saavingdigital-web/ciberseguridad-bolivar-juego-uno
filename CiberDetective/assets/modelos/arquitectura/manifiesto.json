@@ -1,0 +1,134 @@
+[
+  {
+    "triangulos": 3181,
+    "dimensiones_xyz_m": [
+      14.752,
+      13.81,
+      24.6
+    ],
+    "nombre": "apartamentos_a",
+    "archivo": "arquitectura/apartamentos_a.glb",
+    "kb": 217.4,
+    "notas": "huella 14.8 x 13.8 m (ancho x fondo), alto 24.6 m. 5 pisos sobre planta baja de locales con toldo, balcones escalonados que alternan lado, tendederos, aires, tanques, antenas y paneles en azotea."
+  },
+  {
+    "triangulos": 3930,
+    "dimensiones_xyz_m": [
+      18.752,
+      13.43,
+      26.55
+    ],
+    "nombre": "apartamentos_b",
+    "archivo": "arquitectura/apartamentos_b.glb",
+    "kb": 268.0,
+    "notas": "huella 18.8 x 13.4 m (ancho x fondo), alto 26.6 m. 5 pisos con arcada comercial, balcones en columnas laterales con aletas, ático retranqueado con pérgola, tanques, antena y paneles."
+  },
+  {
+    "triangulos": 1624,
+    "dimensiones_xyz_m": [
+      26.3,
+      18.039,
+      11.46
+    ],
+    "nombre": "bodega_puerto",
+    "archivo": "arquitectura/bodega_puerto.glb",
+    "kb": 110.0,
+    "notas": "huella 26.3 x 18.0 m (ancho x fondo), alto 11.5 m. nave de lámina corrugada con tres portones enrollables, ventanas altas, ventiladores eólicos, escalera metálica lateral y tubería en el fondo."
+  },
+  {
+    "triangulos": 2911,
+    "dimensiones_xyz_m": [
+      9.94,
+      13.044,
+      10.53
+    ],
+    "nombre": "casa_colonial_a",
+    "archivo": "arquitectura/casa_colonial_a.glb",
+    "kb": 199.9,
+    "notas": "huella 9.9 x 13.0 m (ancho x fondo), alto 10.5 m. balcon corrido de madera con balaustres torneados, portón con arco, postigos turquesa, farolas, maceteros, chimenea, teja. Cabe en una parcela de hilera 9 x 11 m."
+  },
+  {
+    "triangulos": 3598,
+    "dimensiones_xyz_m": [
+      11.902,
+      11.906,
+      12.9
+    ],
+    "nombre": "casa_colonial_b",
+    "archivo": "arquitectura/casa_colonial_b.glb",
+    "kb": 247.1,
+    "notas": "huella 11.9 x 11.9 m (ancho x fondo), alto 12.9 m. casa esquinera con chaflán y puerta en la esquina, balcón en L, linterna en el techo piramidal, teja. Parcela de esquina 10 x 10 m (balcón sale 1.1 m)."
+  },
+  {
+    "triangulos": 3190,
+    "dimensiones_xyz_m": [
+      9.64,
+      13.72,
+      10.58
+    ],
+    "nombre": "casa_colonial_c",
+    "archivo": "arquitectura/casa_colonial_c.glb",
+    "kb": 219.2,
+    "notas": "huella 9.6 x 13.7 m (ancho x fondo), alto 10.6 m. casa de parapeto con frontón y pináculos, mirador de madera, balconcillos de hierro, buhardillas, escudo, teja a dos aguas con cumbrera hacia el fondo. Parcela de hilera 8.5 x 12 m."
+  },
+  {
+    "triangulos": 3758,
+    "dimensiones_xyz_m": [
+      21.4,
+      17.14,
+      31.35
+    ],
+    "nombre": "oficinas_a",
+    "archivo": "arquitectura/oficinas_a.glb",
+    "kb": 254.7,
+    "notas": "huella 21.4 x 17.1 m (ancho x fondo), alto 31.4 m. 6 pisos sobre planta baja alta, paneles prefabricados con juntas, ventanales, cornisa volada y azotea con aires, tanques, caja de escalera, tubería y antena."
+  },
+  {
+    "triangulos": 3304,
+    "dimensiones_xyz_m": [
+      23.1,
+      19.81,
+      37.85
+    ],
+    "nombre": "oficinas_b",
+    "archivo": "arquitectura/oficinas_b.glb",
+    "kb": 223.7,
+    "notas": "huella 23.1 x 19.8 m (ancho x fondo), alto 37.9 m. 8 pisos con pilastras de concreto profundas y ventanales, planta baja con soportales, núcleo de servicio más alto en la esquina y azotea equipada."
+  },
+  {
+    "triangulos": 2104,
+    "dimensiones_xyz_m": [
+      24.2,
+      22.74,
+      44.8
+    ],
+    "nombre": "torre_vidrio_a",
+    "archivo": "arquitectura/torre_vidrio_a.glb",
+    "kb": 144.7,
+    "notas": "huella 24.2 x 22.7 m (ancho x fondo), alto 44.8 m. torre escalonada: podio, tres cuerpos con retranqueos y terrazas, franjas cian, corona con letrero emisivo sin texto y antenas."
+  },
+  {
+    "triangulos": 3308,
+    "dimensiones_xyz_m": [
+      22.6,
+      24.54,
+      42.9
+    ],
+    "nombre": "torre_vidrio_b",
+    "archivo": "arquitectura/torre_vidrio_b.glb",
+    "kb": 224.6,
+    "notas": "huella 22.6 x 24.5 m (ancho x fondo), alto 42.9 m. torre de planta octogonal (chaflanes) con volumen torcido 3 grados por piso, anillos cian, heliport con luces y letrero emisivo sin texto."
+  },
+  {
+    "triangulos": 1872,
+    "dimensiones_xyz_m": [
+      25.2,
+      23.74,
+      44.6
+    ],
+    "nombre": "torre_vidrio_c",
+    "archivo": "arquitectura/torre_vidrio_c.glb",
+    "kb": 129.9,
+    "notas": "huella 25.2 x 23.7 m (ancho x fondo), alto 44.6 m. podio con jardín y dos torres de 6 y 9 pisos unidas por pasarela de vidrio, coronas distintas, franjas cian/ámbar y letrero emisivo."
+  }
+]

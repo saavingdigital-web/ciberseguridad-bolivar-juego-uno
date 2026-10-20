@@ -1,0 +1,36 @@
+{
+ "kb": 1448.3,
+ "triangulos": 17238,
+ "primitivas": 9,
+ "materiales": [
+  "Trim_03",
+  "Trim_03_Oscuro",
+  "Trim_02_Azul",
+  "Decal_Cian",
+  "Trim_01",
+  "Negro",
+  "Luz_Cian",
+  "Luz_Naranja",
+  "Suelo_Oscuro"
+ ],
+ "imagenes": 12,
+ "min_xyz": [
+  -2.5,
+  -0.006,
+  -8.238
+ ],
+ "max_xyz": [
+  13.428,
+  5,
+  8.238
+ ],
+ "dimensiones_m": [
+  15.928,
+  5.006,
+  16.476
+ ],
+ "nodos": [
+  "Sala_Mando"
+ ],
+ "animaciones": []
+}

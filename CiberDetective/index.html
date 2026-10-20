@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0d14">
+  <title>CiberDetective: Puerto Nexo</title>
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="preload" as="image" href="assets/marca/logo_secretaria.png">
+  <link rel="preload" as="image" href="assets/marca/escudo.png">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./vendor/three/build/three.module.js",
+      "three/addons/": "./vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+  <style>
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0a0d14; }
+    #mundo { position: fixed; inset: 0; }
+    #interfaz { position: fixed; inset: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="mundo"></div>
+  <div id="interfaz"></div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

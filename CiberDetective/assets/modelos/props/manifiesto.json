@@ -1,0 +1,398 @@
+[
+  {
+    "triangulos": 1472,
+    "dimensiones_xyz_m": [
+      1.0,
+      0.42,
+      0.86
+    ],
+    "nombre": "ac_unidad_a",
+    "archivo": "props/ac_unidad_a.glb",
+    "kb": 49.7,
+    "notas": "plantilla de ejemplo"
+  },
+  {
+    "triangulos": 348,
+    "dimensiones_xyz_m": [
+      1.8,
+      1.005,
+      1.13
+    ],
+    "nombre": "ac_unidad_b",
+    "archivo": "props/ac_unidad_b.glb",
+    "kb": 19.8,
+    "notas": "aire acondicionado de 2 ventiladores"
+  },
+  {
+    "triangulos": 664,
+    "dimensiones_xyz_m": [
+      2.0,
+      1.72,
+      10.55
+    ],
+    "nombre": "antena_celular",
+    "archivo": "props/antena_celular.glb",
+    "kb": 28.9,
+    "notas": "mástil 10.5 m con 3 sectores y baliza roja"
+  },
+  {
+    "triangulos": 844,
+    "dimensiones_xyz_m": [
+      7.351,
+      6.45,
+      7.503
+    ],
+    "nombre": "arbol_frondoso_a",
+    "archivo": "props/arbol_frondoso_a.glb",
+    "kb": 31.4,
+    "notas": "árbol redondo de copa densa (mango/ceiba), ~7 m"
+  },
+  {
+    "triangulos": 888,
+    "dimensiones_xyz_m": [
+      10.231,
+      9.395,
+      7.777
+    ],
+    "nombre": "arbol_frondoso_b",
+    "archivo": "props/arbol_frondoso_b.glb",
+    "kb": 31.6,
+    "notas": "árbol de sombra tipo samán, copa ancha en sombrilla, ~8 m"
+  },
+  {
+    "triangulos": 408,
+    "dimensiones_xyz_m": [
+      1.9,
+      0.655,
+      1.063
+    ],
+    "nombre": "banca",
+    "archivo": "props/banca.glb",
+    "kb": 19.0,
+    "notas": "banca de listones de madera y hierro"
+  },
+  {
+    "triangulos": 168,
+    "dimensiones_xyz_m": [
+      0.476,
+      0.5,
+      0.928
+    ],
+    "nombre": "bolardo",
+    "archivo": "props/bolardo.glb",
+    "kb": 6.8,
+    "notas": "bolardo con banda amarilla"
+  },
+  {
+    "triangulos": 772,
+    "dimensiones_xyz_m": [
+      1.8,
+      7.426,
+      2.34
+    ],
+    "nombre": "bote_pesca",
+    "archivo": "props/bote_pesca.glb",
+    "kb": 31.5,
+    "notas": "lancha de pesca artesanal 6.8 m; quilla en Z=0, línea de flotación aprox. Z=0.35; proa a -Y"
+  },
+  {
+    "triangulos": 416,
+    "dimensiones_xyz_m": [
+      4.009,
+      2.889,
+      2.261
+    ],
+    "nombre": "buganvilia",
+    "archivo": "props/buganvilia.glb",
+    "kb": 16.6,
+    "notas": "mata de buganvilia magenta ~1.9 m"
+  },
+  {
+    "triangulos": 360,
+    "dimensiones_xyz_m": [
+      3.3,
+      3.848,
+      3.365
+    ],
+    "nombre": "caja_escalera",
+    "archivo": "props/caja_escalera.glb",
+    "kb": 19.0,
+    "notas": "cuarto de escalera con puerta y alero"
+  },
+  {
+    "triangulos": 272,
+    "dimensiones_xyz_m": [
+      1.3,
+      1.3,
+      3.355
+    ],
+    "nombre": "chimenea",
+    "archivo": "props/chimenea.glb",
+    "kb": 14.7,
+    "notas": "chimenea de ladrillo con sombrerete"
+  },
+  {
+    "triangulos": 852,
+    "dimensiones_xyz_m": [
+      2.52,
+      6.215,
+      2.595
+    ],
+    "nombre": "contenedor_20ft_azul",
+    "archivo": "props/contenedor_20ft_azul.glb",
+    "kb": 52.3,
+    "notas": "contenedor 20 pies acanalado con puertas (frente -Y), largo en Y 6.06 m"
+  },
+  {
+    "triangulos": 852,
+    "dimensiones_xyz_m": [
+      2.52,
+      6.215,
+      2.595
+    ],
+    "nombre": "contenedor_20ft_rojo",
+    "archivo": "props/contenedor_20ft_rojo.glb",
+    "kb": 52.3,
+    "notas": "contenedor 20 pies acanalado con puertas (frente -Y), largo en Y 6.06 m"
+  },
+  {
+    "triangulos": 852,
+    "dimensiones_xyz_m": [
+      2.52,
+      6.215,
+      2.595
+    ],
+    "nombre": "contenedor_20ft_verde",
+    "archivo": "props/contenedor_20ft_verde.glb",
+    "kb": 52.3,
+    "notas": "contenedor 20 pies acanalado con puertas (frente -Y), largo en Y 6.06 m"
+  },
+  {
+    "triangulos": 252,
+    "dimensiones_xyz_m": [
+      0.6,
+      2.925,
+      7.69
+    ],
+    "nombre": "farola",
+    "archivo": "props/farola.glb",
+    "kb": 14.0,
+    "notas": "farola 7.8 m con brazo y lámpara emisiva (frente -Y)"
+  },
+  {
+    "triangulos": 344,
+    "dimensiones_xyz_m": [
+      1.158,
+      0.88,
+      5.02
+    ],
+    "nombre": "farola_colonial",
+    "archivo": "props/farola_colonial.glb",
+    "kb": 20.0,
+    "notas": "farola colonial de hierro negro con linterna"
+  },
+  {
+    "triangulos": 916,
+    "dimensiones_xyz_m": [
+      16.3,
+      47.2,
+      39.75
+    ],
+    "nombre": "grua_portico",
+    "archivo": "props/grua_portico.glb",
+    "kb": 61.1,
+    "notas": "grúa pórtico de muelle ~39 m de alto, pluma de 44 m hacia -Y (agua); contenedor colgando incluido"
+  },
+  {
+    "triangulos": 368,
+    "dimensiones_xyz_m": [
+      0.99,
+      0.7,
+      1.13
+    ],
+    "nombre": "hidrante",
+    "archivo": "props/hidrante.glb",
+    "kb": 18.7,
+    "notas": "hidrante rojo con tomas amarillas"
+  },
+  {
+    "triangulos": 604,
+    "dimensiones_xyz_m": [
+      2.217,
+      0.95,
+      1.637
+    ],
+    "nombre": "jardinera",
+    "archivo": "props/jardinera.glb",
+    "kb": 18.7,
+    "notas": "jardinera de concreto con plantas y flores"
+  },
+  {
+    "triangulos": 398,
+    "dimensiones_xyz_m": [
+      3.7,
+      3.519,
+      3.065
+    ],
+    "nombre": "kiosko_sombrilla",
+    "archivo": "props/kiosko_sombrilla.glb",
+    "kb": 19.4,
+    "notas": "quiosco de venta con sombrilla a rayas"
+  },
+  {
+    "triangulos": 826,
+    "dimensiones_xyz_m": [
+      9.241,
+      8.263,
+      10.427
+    ],
+    "nombre": "palmera_a",
+    "archivo": "props/palmera_a.glb",
+    "kb": 25.4,
+    "notas": "palmera de coco, altura 9.0 m, copa ~9 m"
+  },
+  {
+    "triangulos": 794,
+    "dimensiones_xyz_m": [
+      9.547,
+      8.071,
+      12.438
+    ],
+    "nombre": "palmera_b",
+    "archivo": "props/palmera_b.glb",
+    "kb": 24.4,
+    "notas": "palmera de coco, altura 11.0 m, copa ~9 m"
+  },
+  {
+    "triangulos": 336,
+    "dimensiones_xyz_m": [
+      3.5,
+      1.57,
+      1.285
+    ],
+    "nombre": "panel_solar_fila",
+    "archivo": "props/panel_solar_fila.glb",
+    "kb": 20.3,
+    "notas": "3 paneles solares inclinados en fila (frente -Y)"
+  },
+  {
+    "triangulos": 196,
+    "dimensiones_xyz_m": [
+      0.761,
+      0.8,
+      1.12
+    ],
+    "nombre": "papelera",
+    "archivo": "props/papelera.glb",
+    "kb": 11.3,
+    "notas": "papelera verde con franja amarilla"
+  },
+  {
+    "triangulos": 206,
+    "dimensiones_xyz_m": [
+      1.1,
+      1.103,
+      1.854
+    ],
+    "nombre": "parabolica",
+    "archivo": "props/parabolica.glb",
+    "kb": 9.2,
+    "notas": "antena parabólica con LNB"
+  },
+  {
+    "triangulos": 456,
+    "dimensiones_xyz_m": [
+      4.83,
+      1.43,
+      2.78
+    ],
+    "nombre": "parada_bus",
+    "archivo": "props/parada_bus.glb",
+    "kb": 24.2,
+    "notas": "parada de bus con techo, banca, valla luminosa y poste de ruta"
+  },
+  {
+    "triangulos": 584,
+    "dimensiones_xyz_m": [
+      5.208,
+      0.99,
+      9.3
+    ],
+    "nombre": "poste_electrico",
+    "archivo": "props/poste_electrico.glb",
+    "kb": 31.1,
+    "notas": "poste de concreto con travesaños, transformador y cables cortos"
+  },
+  {
+    "triangulos": 416,
+    "dimensiones_xyz_m": [
+      3.75,
+      0.629,
+      5.585
+    ],
+    "nombre": "semaforo",
+    "archivo": "props/semaforo.glb",
+    "kb": 21.5,
+    "notas": "semáforo con brazo (arriba rojo encendido, verde y ámbar tenues); luces estáticas"
+  },
+  {
+    "triangulos": 152,
+    "dimensiones_xyz_m": [
+      3.105,
+      3.112,
+      2.854
+    ],
+    "nombre": "sombrilla_playa",
+    "archivo": "props/sombrilla_playa.glb",
+    "kb": 9.2,
+    "notas": "sombrilla a rayas rojas/blancas, inclinada 9 grados, base de arena"
+  },
+  {
+    "triangulos": 384,
+    "dimensiones_xyz_m": [
+      1.87,
+      1.8,
+      1.79
+    ],
+    "nombre": "tanque_agua",
+    "archivo": "props/tanque_agua.glb",
+    "kb": 16.2,
+    "notas": "tanque de agua de azotea"
+  },
+  {
+    "triangulos": 548,
+    "dimensiones_xyz_m": [
+      1.65,
+      1.6,
+      3.05
+    ],
+    "nombre": "tanque_agua_b",
+    "archivo": "props/tanque_agua_b.glb",
+    "kb": 25.6,
+    "notas": "tanque de agua de azotea"
+  },
+  {
+    "triangulos": 380,
+    "dimensiones_xyz_m": [
+      4.7,
+      0.27,
+      1.825
+    ],
+    "nombre": "tendedero",
+    "archivo": "props/tendedero.glb",
+    "kb": 24.1,
+    "notas": "tendedero con ropa de colores"
+  },
+  {
+    "triangulos": 376,
+    "dimensiones_xyz_m": [
+      2.936,
+      9.1,
+      12.18
+    ],
+    "nombre": "velero",
+    "archivo": "props/velero.glb",
+    "kb": 19.0,
+    "notas": "velero 9 m, casco blanco/azul, vela mayor y foque; proa a -Y; quilla en Z=0"
+  }
+]
