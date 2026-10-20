@@ -843,6 +843,8 @@
           document.fonts.load(`700 40px Rajdhani`)
         ]).then(() => this.dibujarHUD()).catch(() => {});
       }
+      this.cargarDuraciones();
+      this.cargarAudio('bienvenida', 'audio/bienvenida.mp3');
       window.juego = this; // útil para depurar desde la consola
     },
 
@@ -1366,8 +1368,8 @@
         ctx.globalAlpha = 1;
         // título
         ctx.shadowColor = color; ctx.shadowBlur = 26; ctx.fillStyle = color;
-        fuenteAjustada(ctx, titulo, 900, F_TIT, titulo.length <= 3 ? 190 : 84, w - 100);
-        const ancho = ctx.measureText(titulo).width, x0 = (w - ancho) / 2, yT = sub ? 150 : h / 2;
+        fuenteAjustada(ctx, titulo, 900, F_TIT, titulo.length <= 3 ? 190 : 74, w - 100);
+        const ancho = ctx.measureText(titulo).width, x0 = (w - ancho) / 2, yT = sub ? 115 : h / 2;
         const parte = titulo.slice(0, nTit);
         if (glitch > 0) { // dos copias desplazadas, solo al aparecer
           ctx.globalAlpha = 0.55 * glitch; ctx.shadowBlur = 0;
@@ -1377,18 +1379,21 @@
         }
         ctx.fillText(parte, x0 + (glitch > 0 && Math.random() < 0.3 ? (Math.random() - 0.5) * 14 * glitch : 0), yT);
         ctx.shadowBlur = 0;
-        let xc = x0 + ctx.measureText(parte).width, yc = yT, tam = 84;
+        let xc = x0 + ctx.measureText(parte).width, yc = yT, tam = 74;
         // subtítulo
         if (sub) {
-          ctx.fillStyle = COL.blancoVerde; ctx.font = `600 46px ${F_TXT}`;
-          if (!b.lineasSub) b.lineasSub = lineas(ctx, sub, w - 120).slice(0, 4);
+          const fontSize = sub.length > 120 ? 38 : 44;
+          ctx.fillStyle = COL.blancoVerde; ctx.font = `600 ${fontSize}px ${F_TXT}`;
+          if (!b.lineasSub) b.lineasSub = lineas(ctx, sub, w - 130).slice(0, 5);
           let quedan = restoSub;
+          const yBase = b.lineasSub.length > 3 ? 210 : 230;
+          const salto = b.lineasSub.length > 3 ? 48 : 54;
           b.lineasSub.forEach((l, i) => {
-            if (quedan <= 0 && !(i === 0 && nTit === titulo.length && false)) return;
+            if (quedan <= 0) return;
             const trozo = l.slice(0, quedan);
             const xl = (w - ctx.measureText(l).width) / 2;
-            ctx.fillText(trozo, xl, 280 + i * 54);
-            xc = xl + ctx.measureText(trozo).width; yc = 280 + i * 54; tam = 46;
+            ctx.fillText(trozo, xl, yBase + i * salto);
+            xc = xl + ctx.measureText(trozo).width; yc = yBase + i * salto; tam = fontSize;
             quedan -= l.length + 1;
           });
         }
@@ -3023,6 +3028,14 @@
       this.mostrarPlacaInicio(true); // marca institucional bajo el banner (si el logo ya cargó)
       // el botón baja un poco (antes -0.62) para dejar sitio a la placa de marca sin taparla
       this.crearBoton('> INICIAR MISIÓN', this.puntoFrente(2.1, -0.82), COL.menta, () => this.comenzarPartida());
+
+      // Saludo inicial de bienvenida hablado
+      setTimeout(() => {
+        if (this.fase === 'inicio') {
+          const b = this.bufAudio('bienvenida');
+          if (b) Sonido.voz(b); else Sonido.voz('audio/bienvenida.mp3');
+        }
+      }, 500);
     },
 
     // Textos de los controles según el modo (casco o pantalla)
@@ -3053,10 +3066,13 @@
         accionesCorrectas: 0, accionesErradas: 0
       };
       this.mazo = null; this.primerMazo = true; this.mazoAcoso = null;
-      // audio de la fase 1: duraciones, instrucciones y los primeros mensajes se precargan ya
+      // audio de las dinámicas: duraciones y archivos se precargan ya
       this.cargarDuraciones();
       this.t0Carga = performance.now();
       this.cargarAudio('instr', 'audio/instrucciones.mp3');
+      this.cargarAudio('din_acoso', 'audio/dinamica_acoso.mp3');
+      this.cargarAudio('din_decision', 'audio/dinamica_decision.mp3');
+      this.cargarAudio('cierre_solidario', 'audio/cierre_solidario.mp3');
       this.ultimoCasoId = null;
       this.rellenarCasos();
       this.visor.visible = true; this.visorListo = false;
@@ -3069,12 +3085,12 @@
     cambiarFase(fase) {
       this.fase = fase; this.tFase = 0; this.paso = 0;
       const titulos = {
-        cuenta: ['FASE 1 · NODO ESCOLAR', this.hudControles()],
-        fase1: ['FASE 1 · INTERCEPTA SEÑALES', this.hudControles()],
-        transicion1: ['ESCANEANDO RED DE BOLÍVAR', 'detectando ataque coordinado…'],
-        acoso: ['FASE 2 · PROTEGE A MATEO (11°B)', 'Destruye el ciberacoso antes de que lo alcance'],
-        decision: ['FASE 2 · ESCUDO SOLIDARIO', 'Dispara SOLO a las acciones que ayudan a Mateo'],
-        cierre: ['OPERACIÓN EXITOSA', 'Red Escolar de Bolívar asegurada'],
+        cuenta: ['NIVEL 1 · NODO ESCOLAR', this.hudControles()],
+        fase1: ['NIVEL 1 · INTERCEPTA SEÑALES', this.hudControles()],
+        transicion1: ['NIVEL 2 · ALERTA EN RED DE BOLÍVAR', 'detectando ataque coordinado…'],
+        acoso: ['NIVEL 2 · PROTEGE A MATEO (11°B)', 'Destruye las burbujas de agresión con tu blaster'],
+        decision: ['NIVEL 3 · ESCUDO SOLIDARIO', 'Dispara SOLO a las acciones que ayudan a Mateo'],
+        cierre: ['¡MISIÓN CUMPLIDA!', 'Red Escolar de Bolívar asegurada'],
         final: ['BITÁCORA GUARDIA DIGITAL', 'Dispara a SIGUIENTE OPERADOR']
       };
       if (titulos[fase]) [this.hudTitulo, this.hudObjetivo] = titulos[fase];
@@ -3088,18 +3104,18 @@
       const t = this.tFase;
 
       if (this.fase === 'cuenta') {
-        // Suena instrucciones.mp3 (≈11 s); el primer dron sale al terminar. Sin audio: el texto se queda 7 s.
+        // Suena instrucciones.mp3 (Nivel 1); el primer dron sale al terminar.
         if (this.paso === 0) {
           const e = this.audios.instr;
           if ((e && e.buf !== undefined) || performance.now() - this.t0Carga > 2500) {
             this.paso = 1;
             const b = e && e.buf;
             const conVoz = !!b && Sonido.listo();
-            this.durCuenta = conVoz ? b.duration + 0.4 : 7;
+            this.durCuenta = conVoz ? b.duration + 0.5 : ((this.duraciones && this.duraciones.instrucciones) || 14.5);
             this.tCuenta0 = t;
             if (conVoz) Sonido.voz(b);
             this.soltarAudio('instr');
-            this.mostrarBanner('ESCUCHA', this.textoControles(), COL.fosforo, 0);
+            this.mostrarBanner('NIVEL 1 · INTERCEPTA SEÑALES', this.textoControles(), COL.fosforo, 0);
           }
         } else if (t - this.tCuenta0 >= this.durCuenta) {
           this.cambiarFase('fase1');
@@ -3108,7 +3124,7 @@
           this.dirBase = this.frenteHorizontal(); this.nLanzados = 0; this.hudCola = -1;
           this.rellenarCasos();
           Sonido.cuenta(0);
-          this.mostrarBanner('¡YA!', '', COL.menta, 1.4);
+          this.mostrarBanner('¡COMENZAR!', '', COL.menta, 1.4);
         }
       } else if (this.fase === 'fase1') {
         // Hasta maxDrones a la vez; un solo dron habla por turno (ver gestionarFase1). Termina cuando no queda ninguno vivo
@@ -3120,15 +3136,23 @@
         const libre = !this.drones.some(d => !d.resuelto) && this.retroRestante <= 0;
         if (this.integridad <= 0 || (libre && (this.sinMasDrones || restante <= 0)) || restante < -CONFIG.graciaFinal) this.terminarFase1();
       } else if (this.fase === 'transicion1') {
-        if (this.paso === 0 && t >= 2.8) {
+        if (this.paso === 0 && t >= 2.0) {
           this.paso = 1;
           Sonido.alerta();
           Sonido.musica.modo = 'tension';
-          this.mostrarBanner('ALERTA: ATAQUE CONTRA MATEO',
-            'Tu compañero Mateo (11°B) sufre un ataque coordinado de ciberacoso. ¡Destruye los mensajes antes de que lo alcancen!', COL.rojo, 4.5);
+          const buf = this.bufAudio('din_acoso');
+          if (buf) Sonido.voz(buf);
+          else Sonido.voz('audio/dinamica_acoso.mp3');
+          const durAcoso = (this.duraciones && this.duraciones.dinamica_acoso) || 13.0;
+          this.durTransicion1 = durAcoso + 0.8;
+          this.mostrarBanner('¡NIVEL 2: ALERTA DE CIBERACOSO!',
+            'Tu compañero Mateo (11°B) sufre un ataque coordinado en redes sociales. ¡Apunta y destruye las burbujas de agresión con tu blaster antes de que lo alcancen!', COL.rojo, durAcoso + 0.5);
           this.crearAmigo();
         }
-        if (t >= 6.5) { this.cambiarFase('acoso'); this.tSpawn = 0.5; }
+        if (this.paso === 1 && t >= 2.0 + (this.durTransicion1 || 13.5)) {
+          this.cambiarFase('acoso');
+          this.tSpawn = 0.5;
+        }
       } else if (this.fase === 'acoso') {
         const prog = t / CONFIG.duracionAcoso;
         this.tSpawn -= dt;
@@ -3140,8 +3164,12 @@
           this.burbujas.slice().forEach(b => { this.absorber(b.grupo.position.clone(), COL.rojo); this.quitarBurbuja(b); });
           this.cambiarFase('decision');
           Sonido.alerta();
-          this.mostrarBanner('ACTIVA EL ESCUDO DE MATEO',
-            'Dispara SOLO a las decisiones de testigo activo. Cada acierto levanta su escudo protector.', COL.menta, 4);
+          const bufDec = this.bufAudio('din_decision');
+          if (bufDec) Sonido.voz(bufDec);
+          else Sonido.voz('audio/dinamica_decision.mp3');
+          const durDec = (this.duraciones && this.duraciones.dinamica_decision) || 12.0;
+          this.mostrarBanner('¡NIVEL 3: ESCUDO SOLIDARIO!',
+            'No seas un espectador pasivo. Dispara ÚNICAMENTE a las acciones que ayudan y protegen a Mateo para activar su escudo comunitario.', COL.menta, durDec);
           this.crearAcciones();
         }
       } else if (this.fase === 'decision') {
@@ -3155,11 +3183,16 @@
           this.dibujarEtiquetaAmigo();
           Sonido.victoria();
           Sonido.musica.modo = 'calma';
-          this.mostrarBanner(listas ? '¡MATEO PROTEGIDO!' : 'ESCUDO COMUNITARIO ACTIVO',
-            `En Bolívar nadie enfrenta el ciberacoso en soledad: guarda evidencia, bloquea y habla con un adulto. ${LINEAS_AYUDA}`, COL.protegido, 7);
+          const bufCierre = this.bufAudio('cierre_solidario');
+          if (bufCierre) Sonido.voz(bufCierre);
+          else Sonido.voz('audio/cierre_solidario.mp3');
+          const durCierre = (this.duraciones && this.duraciones.cierre_solidario) || 23.5;
+          this.durCierreTotal = durCierre + 3.0; // ~26.5 segundos en pantalla
+          this.mostrarBanner('¡MATEO PROTEGIDO! · EN BOLÍVAR NO ESTÁS SOLO',
+            `«En Bolívar el ciberacoso no se vive a solas: guarda evidencia, bloquea al agresor y cuéntale de inmediato a un adulto de confianza. Comunícate gratis a la Línea 106 o al CAI Virtual 123. Secretaría de las TIC · Gobernación de Bolívar»`, COL.protegido, this.durCierreTotal);
         }
       } else if (this.fase === 'cierre') {
-        if (t >= 7.2) this.mostrarResultados();
+        if (t >= (this.durCierreTotal || 26.5)) this.mostrarResultados();
       }
     },
 

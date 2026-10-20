@@ -55,8 +55,17 @@ Para lograr que los jóvenes de 10° y 11° sientan una conexión emocional aut�
 4. **Fase 2 · Protege a Mateo (11°B) del Ciberacoso:**
    - Aparece el holograma de **Mateo (11°B)**, un compañero del colegio que está siendo atacado por criaturas de acoso digital (*«Nadie te quiere en el grupo»*, *«Ya creamos un perfil falso tuyo»*).
    - El estudiante derriba las agresiones antes de que golpeen el ánimo de Mateo y luego dispara únicamente a las **acciones de testigo activo** (*📸 Guardar evidencia*, *🚫 Bloquear y reportar*, *🗣️ Contarle a un adulto*, *🤝 Apoyar a mi amigo*), descartando las reacciones tóxicas (*🔁 Reenviar al grupo*, *😡 Responder con insultos*, *🙈 No es mi problema*).
-5. **Bitácora de Guardia Digital (Resultados):**
-   - Muestra el puntaje, el rango alcanzado (*Cadete de Ciberdefensa → Defensor Digital Juvenil → Comandante CiberEscudo → Guardián Legendario de Bolívar*), el Top 5 local y las líneas reales de ayuda en Colombia (`teprotejo.org` y **Línea 141 del ICBF**).
+5. **Bitácora de Guardia Digital y Mensaje Institucional Final:**
+   - **Locución y Permanencia Extendida (26 s):** Al proteger a Mateo se reproduce la locución institucional: *«¡Misión cumplida! Recuerda: en Bolívar, el ciberacoso no se vive a solas. Si eres testigo o víctima, guarda evidencia, bloquea al agresor y cuéntale de inmediato a un adulto de confianza. Comunícate gratis a la Línea 106 o al CAI Virtual 123. Secretaría de las TIC, Gobernación de Bolívar»*, manteniendo el mensaje en pantalla con tipografía legible para que todos los estudiantes lo lean sin prisas.
+   - Muestra el puntaje, el rango alcanzado (*Cadete de Ciberdefensa → Defensor Digital Juvenil → Comandante CiberEscudo → Guardián Legendario de Bolívar*), el Top 5 local y las líneas reales de ayuda en Colombia (**Línea 106**, **CAI Virtual 123**, **Línea 141 ICBF** y `teprotejo.org`).
+
+### Sistema de Audio y Locución Educativa (Novedades de Accesibilidad)
+- **Saludo Inicial de Bienvenida:** Al ingresar al centro de mando (en VR o PC), una voz institucional en español saluda al operador: *«¡Hola! Te damos la bienvenida a CiberEscudo: Código Verde, una iniciativa de la Secretaría de las TIC de la Gobernación de Bolívar. Prepárate para proteger nuestra red escolar»*.
+- **Instrucción de Voz en Cada Nivel:**
+  - **Nivel 1 (Interceptación de Drones):** La voz explica la dinámica antes de iniciar: cómo escuchar cada mensaje, disparar amenazas con la mano derecha y capturar mensajes seguros con la izquierda.
+  - **Nivel 2 (Alerta de Ciberacoso):** Al detectar el ataque contra Mateo, la voz anuncia el inicio del nivel y explica que se deben derribar las burbujas de agresión con el blaster.
+  - **Nivel 3 (Escudo Solidario):** La voz orienta al estudiante a no ser un espectador pasivo y disparar solo a las acciones de apoyo comunitario.
+- **Audio Pre-renderizado de Alta Fidelidad y Offline:** 45 archivos de audio generados a 24 kHz y cacheados mediante el Service Worker (`ciberescudo-v13`) para que funcionen 100% sin conexión en Meta Quest.
 
 ### Mejoras Gráficas, UX y de Marca Aplicadas
 - **Eliminación Total del Aspecto Verde "Hacker Retro":** Sustitución completa de tintes olivo por paleta Cyber-Command Neón: Cian Eléctrico (`#00e5ff`), Azul Bolívar (`#0075b8`), Oro Institucional (`#ffcc29`) y Obsidiana (`#020612`).

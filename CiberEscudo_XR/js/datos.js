@@ -197,4 +197,4 @@ const ACCIONES_ACOSO = [
 ];
 
 // Líneas de ayuda reales en Colombia (se muestran al final).
-const LINEAS_AYUDA = 'Reporta en teprotejo.org · Línea 141 ICBF (gratuita)';
+const LINEAS_AYUDA = 'En Bolívar el ciberacoso no se vive a solas · Línea 106 · CAI Virtual 123 · Línea 141 ICBF';

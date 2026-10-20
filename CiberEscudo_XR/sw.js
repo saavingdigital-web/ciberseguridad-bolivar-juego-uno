@@ -1,7 +1,7 @@
 /* CiberEscudo XR - Service worker: guarda el juego completo para usarlo sin internet.
  * Si cambias algún archivo, sube el número de VERSION para que el casco descargue lo nuevo.
  */
-const VERSION = 'ciberescudo-v12';
+const VERSION = 'ciberescudo-v13';
 const ARCHIVOS = [
   './',
   './index.html',
@@ -30,7 +30,11 @@ const ARCHIVOS = [
   './modelos/scifi/alien_cyclop.glb',
   './modelos/scifi/plataforma_mando.glb',
   './modelos/scifi/sala_mando.glb',
+  './audio/bienvenida.mp3',
   './audio/instrucciones.mp3',
+  './audio/dinamica_acoso.mp3',
+  './audio/dinamica_decision.mp3',
+  './audio/cierre_solidario.mp3',
   './audio/duraciones.json',
   './audio/mensajes/c01.mp3',
   './audio/mensajes/c02.mp3',
