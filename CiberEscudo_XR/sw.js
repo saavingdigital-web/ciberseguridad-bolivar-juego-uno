@@ -1,7 +1,7 @@
 /* CiberEscudo XR - Service worker: guarda el juego completo para usarlo sin internet.
  * Si cambias algún archivo, sube el número de VERSION para que el casco descargue lo nuevo.
  */
-const VERSION = 'ciberescudo-v14';
+const VERSION = 'ciberescudo-v16';
 const ARCHIVOS = [
   './',
   './index.html',

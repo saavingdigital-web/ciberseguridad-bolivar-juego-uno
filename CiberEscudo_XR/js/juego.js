@@ -255,6 +255,8 @@
       portal_marco: 'modelos/portal_marco.glb',
       blaster_cian: 'modelos/blaster_cian.glb',
       blaster_naranja: 'modelos/blaster_naranja.glb',
+      mano_izquierda: 'modelos/mano_izquierda.glb',
+      mano_derecha: 'modelos/mano_derecha.glb',
       amigo_holo: 'modelos/amigo_holo.glb',
       burbuja_acoso: 'modelos/burbuja_acoso.glb',
       escudo_amigo: 'modelos/escudo_amigo.glb',
@@ -781,6 +783,7 @@
       this.crearVisor();
       this.crearVineta();
       this.crearEntornoVirtual();
+      this.crearArmasPC();
       this.plataforma = null; this.sala = null;
 
       // Luz para los materiales PBR del kit: hemisférica barata, sin sombras, más un mapa de entorno solo para el kit
@@ -791,6 +794,8 @@
       if (this.el.renderer) montarEntorno(); else this.el.addEventListener('renderstart', montarEntorno, { once: true });
       Modelos.cuando('sala_mando', () => this.montarSala());
       Modelos.cuando('plataforma_mando', () => { if (this.fase !== 'menu') this.colocarEscenario(); });
+      Modelos.cuando('blaster_naranja', () => this.montarArmasPC());
+      Modelos.cuando('mano_izquierda', () => this.montarArmasPC());
 
       // Mando DERECHO: gatillo = disparar. Mando IZQUIERDO: no dispara; gatillo o agarre = atrapar el dron cercano.
       // (Decisión: el izquierdo no dispara en ninguna fase; en la fase 2 y la ayuda se juega con el derecho.)
@@ -902,6 +907,8 @@
       const ret = document.getElementById('reticula-pc');
       const av = document.getElementById('aviso-pc');
       if (modo === 'pantalla') {
+        this.montarArmasPC();
+        if (this.rigArmasPC) this.rigArmasPC.visible = true;
         if (ret) ret.classList.add('activo');
         if (av) {
           av.classList.remove('activo');
@@ -911,6 +918,7 @@
         this.solicitarBloqueoPuntero();
         this.mostrarInicio();
       } else {
+        if (this.rigArmasPC) this.rigArmasPC.visible = false;
         if (ret) ret.classList.remove('activo');
         if (av) av.classList.remove('activo');
         this.esperandoXR = true;
@@ -922,6 +930,7 @@
       this.fase = 'menu';
       this.visor.visible = false;
       if (this.plataforma) this.plataforma.visible = false;
+      if (this.rigArmasPC) this.rigArmasPC.visible = false;
       Sonido.musica.detener();
       const ret = document.getElementById('reticula-pc');
       const av = document.getElementById('aviso-pc');
@@ -1179,6 +1188,10 @@
 
     dispararEscritorio() {
       if (this.fase === 'menu' || this.el.is('vr-mode') || !this.el.camera) return;
+      if (this.armaDerechaPC) {
+        this.recoilArmaPC = 0.055;
+        if (this.bocaPC) this.fogonazo(this.bocaPC);
+      }
       this.rayEscritorio.setFromCamera(this.mouse, this.el.camera);
       const hits = this.rayEscritorio.intersectObjects(this.objetivos.map(o => o.ent.object3D), true);
       const ray = this.rayEscritorio.ray;
@@ -1286,6 +1299,9 @@
 
     capturarEscritorio() {
       if (this.fase !== 'fase1' || this.el.is('vr-mode') || !this.el.camera) return;
+      if (this.guanteIzquierdoPC) {
+        this.pulsoGuantePC = 0.055;
+      }
       let d = null;
       if (this.mouseActivo) {
         this.rayEscritorio.setFromCamera(this.mouse, this.el.camera);
@@ -1391,6 +1407,92 @@
     },
     zonaColision(ancho, alto, fondo) {
       return new THREE.Mesh(new THREE.BoxGeometry(ancho, alto, fondo), new THREE.MeshBasicMaterial({ visible: false }));
+    },
+
+    // ---------- Armas en primera persona (POV) para PC / Navegador ----------
+    crearArmasPC() {
+      this.rigArmasPC = new THREE.Group();
+      this.rigArmasPC.visible = false;
+      this.recoilArmaPC = 0;
+      this.pulsoGuantePC = 0;
+      this.armasPCMontadas = false;
+
+      const vincularCamara = () => {
+        if (this.el.camera && !this.rigArmasPC.parent) {
+          this.el.camera.add(this.rigArmasPC);
+        }
+      };
+      if (this.el.camera) vincularCamara();
+      this.el.addEventListener('camera-set-active', vincularCamara);
+      this.el.addEventListener('renderstart', vincularCamara);
+    },
+
+    montarArmasPC() {
+      if (this.armasPCMontadas) return;
+      if (!this.rigArmasPC) this.crearArmasPC();
+
+      // 1. Mano Derecha: Ciber-Blaster Alienígena Halo Covenant + Guante Espacial
+      this.armaDerechaPC = new THREE.Group();
+      this.armaDerechaPC.position.set(0.24, -0.22, -0.42);
+
+      const blaster = Modelos.clonar('blaster_naranja');
+      if (blaster) {
+        blaster.rotation.y = Math.PI; // cañón hacia -Z del jugador
+        this.armaDerechaPC.add(blaster);
+      }
+      const manoDer = Modelos.clonar('mano_derecha');
+      if (manoDer) {
+        this.armaDerechaPC.add(manoDer);
+      }
+
+      this.bocaPC = crearGlow(COL.cian, 0.001, 0);
+      this.bocaPC.position.set(0, 0.067, -0.205);
+      this.armaDerechaPC.add(this.bocaPC);
+
+      // 2. Mano Izquierda: Guante Espacial en postura abierta receptiva con vórtice de captura
+      this.guanteIzquierdoPC = new THREE.Group();
+      this.guanteIzquierdoPC.position.set(-0.24, -0.20, -0.38);
+      this.guanteIzquierdoPC.rotation.set(-0.12, -0.20, 0.16);
+
+      const guanteIzq = Modelos.clonar('mano_izquierda');
+      if (guanteIzq) {
+        this.guanteIzquierdoPC.add(guanteIzq);
+      }
+
+      // Vórtice energético sobre la palma receptiva
+      const haloPalma = new THREE.Mesh(new THREE.TorusGeometry(0.038, 0.002, 6, 24), matAditivo(COL.menta, 0.8));
+      haloPalma.position.set(0, -0.028, -0.002);
+      haloPalma.rotation.x = Math.PI / 2;
+      this.guanteIzquierdoPC.add(haloPalma);
+      this.guanteIzquierdoPC.halo = haloPalma;
+
+      this.rigArmasPC.add(this.armaDerechaPC, this.guanteIzquierdoPC);
+      this.armasPCMontadas = true;
+    },
+
+    actualizarArmasPC(t, dt) {
+      if (!this.rigArmasPC || !this.rigArmasPC.visible || !this.armasPCMontadas) return;
+
+      // Balanceo orgánico y respiración sutil en primera persona
+      const swayY = Math.sin(t * 0.002) * 0.0035;
+      const swayX = Math.cos(t * 0.0014) * 0.002;
+
+      if (this.armaDerechaPC) {
+        this.armaDerechaPC.position.x = 0.24 + swayX;
+        this.armaDerechaPC.position.y = -0.22 + swayY - this.recoilArmaPC * 0.35;
+        this.armaDerechaPC.position.z = -0.42 + this.recoilArmaPC;
+        this.recoilArmaPC *= Math.exp(-dt * 14);
+      }
+
+      if (this.guanteIzquierdoPC) {
+        this.guanteIzquierdoPC.position.x = -0.24 - swayX;
+        this.guanteIzquierdoPC.position.y = -0.20 + swayY * 0.8;
+        this.guanteIzquierdoPC.position.z = -0.38 - this.pulsoGuantePC;
+        if (this.guanteIzquierdoPC.halo) {
+          this.guanteIzquierdoPC.halo.rotation.z += dt * 3.5;
+        }
+        this.pulsoGuantePC *= Math.exp(-dt * 12);
+      }
     },
 
     // ---------- Visor HUD que sigue la mirada suavemente ----------
@@ -3476,6 +3578,7 @@
     tick(t, dtMs) {
       const dt = Math.min((dtMs || 16) / 1000, 0.05);
       this.actualizarCamara();
+      this.actualizarArmasPC(t, dt);
       if (!this.vinetaMontada && this.el.camera) { this.el.camera.add(this.vineta); this.vinetaMontada = true; }
       if (this.vinetaT > 0) {
         this.vinetaT = Math.max(0, this.vinetaT - dt * 1.5);
